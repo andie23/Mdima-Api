@@ -47,17 +47,8 @@ Router::scope('/', function ($routes) {
      * its action called 'display', and we pass a param to select the view file
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
-    $routes->connect('/', ['controller' => 'Users', 'action' => 'index', 'Users']);
-    $routes->connect('/dashboard', ['controller' => 'Dashboard', 'action' => 'index', 'Dashboard']);
-    $routes->connect('/posts/add', ['controller' => 'Posts', 'action' => 'add', 'New Post']);
-    $routes->connect('/admin', ['controller' => 'Administration', 'action' => 'index', 'Administration']);
-    $routes->connect('/inbox', ['controller' => 'Messages', 'action' => 'index', 'Inbox']);
-    $routes->connect('/blog', ['controller' => 'Blogs', 'action' => 'index', 'Blog']);
-    $routes->connect('/docs', ['controller' => 'Documents', 'action' => 'index', 'docs']);
-    $routes->connect('/meetings', ['controller' => 'Meetings', 'action' => 'index', 'Meetings']);
-    $routes->connect('/security', ['controller' => 'Users', 'action' => 'security', 'Security']);
-    $routes->connect('/logout', ['controller' => 'Users', 'action' => 'logout', 'Logout']);
-
+    $routes->connect('/', ['controller' => 'Groups', 'action' => 'index', 'Groups']);
+   
     /**
      * Connect catchall routes for all controllers.
      *
