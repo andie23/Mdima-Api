@@ -1,0 +1,17 @@
+.footer-navbar-nav{
+	display: inline-block;
+	text-align: center;
+}
+
+.footer-navbar-nav>li{
+	display: inline-block;
+	
+	text-align: center;
+}
+.date select,
+.time select,
+.datetime select {
+    display: inline;
+    width: auto;
+    margin-right: 10px;
+}
