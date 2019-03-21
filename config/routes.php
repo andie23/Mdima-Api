@@ -41,6 +41,14 @@ use Cake\Routing\Router;
  */
 Router::defaultRouteClass('DashedRoute');
 
+Router::scope('/api/v0.1', function($routes){
+    $routes->connect('/', ['controller'=>'Api', 'action'=>'index', 'All']);
+    $routes->connect('/regions', ['controller'=>'Api', 'action'=>'regions', 'Regions']);
+    $routes->connect('/locations', ['controller'=>'Api', 'action'=>'locations', 'Locations']);
+    $routes->connect('/areas', ['controller'=>'Api', 'action'=>'areas', 'Areas']);
+    $routes->connect('/schedules', ['controller'=>'Api', 'action'=>'schedules', 'Schedules']);
+});
+
 Router::scope('/', function ($routes) {
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',

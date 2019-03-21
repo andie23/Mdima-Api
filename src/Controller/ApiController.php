@@ -17,7 +17,7 @@ class ApiController extends AppController
         $this->response->type('application/json');
         $this->autoRender = false;
     }
-    public function export()
+    public function index()
     {
 
         $this->loadModel('Regions');
