@@ -53,6 +53,13 @@ class RegionsTable extends Table
         return $validator;
     }
 
+    public function getAllRegions()
+    {
+        return $this->find()
+                    ->select(['region'=>'name'])
+                    ->all();
+    }
+
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['name']));

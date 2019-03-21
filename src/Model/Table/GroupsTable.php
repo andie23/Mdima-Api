@@ -57,4 +57,10 @@ class GroupsTable extends Table
 
         return $validator;
     }
+
+    public function getGroupsByAreaId($areaId)
+    {
+        return $this->find()
+                    ->where(['area_id' => $areaId]);
+    }
 }

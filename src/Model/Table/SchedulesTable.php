@@ -82,4 +82,10 @@ class SchedulesTable extends Table
         $rules->add($rules->existsIn(['group_id'], 'Groups'));
         return $rules;
     }
+
+    public function getSchedulesByGroupId($groupId)
+    {
+        return $this->find()
+                    ->where(['group_id'=>$groupId]);
+    }
 }

@@ -58,6 +58,19 @@ class LocationsTable extends Table
         return $validator;
     }
 
+    public function getAllLocations()
+    {
+        return $this->find()
+                    ->select(['location'=>'Locations.name', 
+                    'region'=>'Regions.name'])
+                    ->contain('Regions');
+    }
+    
+    public function getLocationsByRegion($regionId)
+    {
+        return $this->find()
+                    ->where(['region_id'=>$regionId]);
+    }
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.

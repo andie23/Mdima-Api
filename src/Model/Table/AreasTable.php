@@ -67,6 +67,25 @@ class AreasTable extends Table
                     ->where(['Locations.region_id'=>$regionId]);
     }
 
+    public function getAreasByLocationId($locationId)
+    {
+        return $this->find()
+                    ->select(['area'=>'Areas.name'])
+                    ->where(['location_id'=>$locationId]);
+    }
+   
+    public function getAllAreas()
+    {
+        return $this->find()
+                    ->select([
+                        'area'=>'Areas.name', 'location'=>'Locations.name',
+                        'region' => 'regions.name'
+                    ])
+                    ->contain('Locations')
+                    ->where(['location_id'=>$locationId])
+                    ->innerJoin('regions', 'regions.id=Locations.region_id');
+    }
+
     public function getAreasGroupedIntoRegions()
     {
         $groupedAreas = [];
