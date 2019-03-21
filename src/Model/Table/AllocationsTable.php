@@ -94,16 +94,35 @@ class AllocationsTable extends Table
         return ArrayEntityBuilder::build($query, 'location');
     }
 
-    public function getGroupsByAreaId($areaId)
+    private function getGroupBy($id, $table)
     {
         $query = $this->find()
                       ->select(['name'=>'Groups.name'])
                       ->contain('Groups')
-                      ->where(['area_id' => $areaId])
+                      ->where([__('{0}.id', $table) => $id])
+                      ->innerJoin('areas', 'areas.id=Allocations.area_id')
+                      ->innerJoin('locations', 'areas.location_id=locations.id')
+                      ->innerJoin('regions', 'regions.id=locations.region_id')
                       ->distinct('group_id')
                       ->hydrate(false);
         return ArrayEntityBuilder::build($query, 'name');
     }
+
+    public function getGroupsByAreaId($areaId)
+    {
+        return $this->getGroupBy($areaId, 'areas');
+    }
+
+    public function getGroupsByRegionId($regionId)
+    {
+        return $this->getGroupBy($regionId, 'regions');
+    }
+
+    public function getGroupsByLocationId($locationId)
+    {
+       return $this->getGroupBy($locationId, 'locations');
+    }
+    
     /**
      * Default validation rules.
      *

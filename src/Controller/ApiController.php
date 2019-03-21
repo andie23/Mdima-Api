@@ -20,9 +20,9 @@ class ApiController extends AppController
         $this->loadModel('Groups');
 
         $export = [
-            /*'regions' => $this->Regions->getAllRegionsAndChildren(),
+            'regions' => $this->Regions->getAllRegionsAndChildren(),
             'locations' => $this->Locations->getAllLocationsAndChildren(),
-            'areas' => $this->Areas->getAllAreasAndChildren(),*/
+            'areas' => $this->Areas->getAllAreasAndChildren(), 
             'schedules' => $this->Groups->getAllGroupsAndChildren()
         ];
         debug($export);

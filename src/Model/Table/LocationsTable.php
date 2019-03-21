@@ -73,13 +73,15 @@ class LocationsTable extends Table
     {
         $entities = [];
         $areas = TableRegistry::get('areas');
+        $allocations = TableRegistry::get('allocations');
         $locations = $this->getAllLocations();
 
         foreach($locations as $location)
         {
             $entities[$location->location] = [
                 'region' => $location->region,
-                'areas' => $areas->getAreasByLocationId($location->id)
+                'areas' => $areas->getAreasByLocationId($location->id),
+                'groups' => $allocations->getGroupsByLocationId($location->id)
             ];
         }
 

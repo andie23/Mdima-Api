@@ -65,11 +65,13 @@ class RegionsTable extends Table
     {
         $entity = [];
         $locations = TableRegistry::get('locations');
+        $allocations = TableRegistry::get('allocations');
         $regions = $this->getAllRegions();
 
         foreach ($regions as $region){
             $entity[$region->name] = [
-               'locations' => $locations->getLocationsByRegionId($region->id)
+               'locations' => $locations->getLocationsByRegionId($region->id),
+               'groups' => $allocations->getGroupsByRegionId($region->id)
             ];
         }
         return $entity;
