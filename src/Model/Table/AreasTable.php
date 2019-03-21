@@ -7,6 +7,7 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
+use App\Lib\ArrayEntityBuilder;
 
 /**
  * Areas Model
@@ -69,21 +70,39 @@ class AreasTable extends Table
 
     public function getAreasByLocationId($locationId)
     {
-        return $this->find()
-                    ->select(['area'=>'Areas.name'])
+        $query = $this->find()
+                    ->select('name')
                     ->where(['location_id'=>$locationId]);
+        
+        return ArrayEntityBuilder::build($query, 'name');
     }
    
     public function getAllAreas()
     {
         return $this->find()
                     ->select([
-                        'area'=>'Areas.name', 'location'=>'Locations.name',
+                        'id' => 'Areas.id','area'=>'Areas.name', 
+                        'location'=>'Locations.name',
                         'region' => 'regions.name'
                     ])
-                    ->contain('Locations')
-                    ->where(['location_id'=>$locationId])
+                    ->innerJoin('locations', 'locations.id=Areas.location_id')
                     ->innerJoin('regions', 'regions.id=Locations.region_id');
+    }
+
+    public function getAllAreasAndChildren()
+    {
+        $entity = [];
+        $allocations = TableRegistry::get('allocations');
+        $areas = $this->getAllAreas();
+
+        foreach ($areas as $area){
+            $entity[$area->area] = [
+               'location' => $area->location,
+               'region' => $area->region,
+               'groups' => $allocations->getGroupsByAreaId($area->id)
+            ];
+        }
+        return $entity;
     }
 
     public function getAreasGroupedIntoRegions()

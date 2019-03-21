@@ -5,6 +5,7 @@ use App\Model\Entity\Group;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -58,9 +59,29 @@ class GroupsTable extends Table
         return $validator;
     }
 
-    public function getGroupsByAreaId($areaId)
+    public function getAllGroups()
     {
-        return $this->find()
-                    ->where(['area_id' => $areaId]);
+        return $this->find()->all();
     }
+
+    public function getAllGroupsAndChildren()
+    {
+        $entity = [];
+        $schedules = TableRegistry::get('schedules');
+        $allocations = TableRegistry::get('allocations');
+        $groups = $this->getAllGroups();
+
+        foreach($groups as $group)
+        {
+            $entity[$group->name] = [
+                'areas' => $allocations->getAreasAssigned($group->id),
+                'regions' => $allocations->getRegionsAssigned($group->id),
+                'locations' => $allocations->getLocationsAssigned($group->id),
+                'schedules' => $schedules->getSchedulesByGroupId($group->id)
+            ];
+        }
+
+        return $entity;
+    }
+
 }

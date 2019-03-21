@@ -6,7 +6,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-
+use App\Lib\ArrayEntityBuilder;
 /**
  * Schedules Model
  *
@@ -85,7 +85,10 @@ class SchedulesTable extends Table
 
     public function getSchedulesByGroupId($groupId)
     {
-        return $this->find()
-                    ->where(['group_id'=>$groupId]);
+        $query = $this->find()
+                      ->select(['name', 'duration', 'starting_date', 'ending_date'])
+                      ->where(['group_id'=>$groupId])
+                      ->hydrate(false);
+        return ArrayEntityBuilder::build($query);
     }
 }

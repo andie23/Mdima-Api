@@ -5,6 +5,7 @@ use App\Model\Entity\Region;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -56,8 +57,22 @@ class RegionsTable extends Table
     public function getAllRegions()
     {
         return $this->find()
-                    ->select(['region'=>'name'])
+                    ->select()
                     ->all();
+    }
+
+    public function getAllRegionsAndChildren()
+    {
+        $entity = [];
+        $locations = TableRegistry::get('locations');
+        $regions = $this->getAllRegions();
+
+        foreach ($regions as $region){
+            $entity[$region->name] = [
+               'locations' => $locations->getLocationsByRegionId($region->id)
+            ];
+        }
+        return $entity;
     }
 
     public function buildRules(RulesChecker $rules)

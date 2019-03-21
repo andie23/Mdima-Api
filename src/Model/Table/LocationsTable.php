@@ -5,8 +5,9 @@ use App\Model\Entity\Location;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
-
+use App\Lib\ArrayEntityBuilder;
 /**
  * Locations Model
  *
@@ -61,15 +62,38 @@ class LocationsTable extends Table
     public function getAllLocations()
     {
         return $this->find()
-                    ->select(['location'=>'Locations.name', 
-                    'region'=>'Regions.name'])
-                    ->contain('Regions');
+                        ->select(['id'=>'Locations.id', 'region'=>'Regions.name',
+                        'location' => 'Locations.name'
+                        ])
+                      ->contain('Regions')
+                      ->all();
     }
-    
-    public function getLocationsByRegion($regionId)
+
+    public function getAllLocationsAndChildren()
     {
-        return $this->find()
-                    ->where(['region_id'=>$regionId]);
+        $entities = [];
+        $areas = TableRegistry::get('areas');
+        $locations = $this->getAllLocations();
+
+        foreach($locations as $location)
+        {
+            $entities[$location->location] = [
+                'region' => $location->region,
+                'areas' => $areas->getAreasByLocationId($location->id)
+            ];
+        }
+
+        return $entities;
+    }
+
+    public function getLocationsByRegionId($regionId)
+    {
+        $query = $this->find()
+                    ->select(['name'])
+                    ->where(['region_id'=>$regionId])
+                    ->hydrate(false);
+
+        return ArrayEntityBuilder::build($query, 'name');
     }
     /**
      * Returns a rules checker object that will be used for validating
