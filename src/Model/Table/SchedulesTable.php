@@ -83,12 +83,14 @@ class SchedulesTable extends Table
         return $rules;
     }
 
-    public function getSchedulesByGroupId($groupId)
+    public function getSchedules()
     {
         $query = $this->find()
-                      ->select(['name', 'duration', 'starting_date', 'ending_date'])
-                      ->where(['group_id'=>$groupId])
+                      ->select([
+                          'name', 'duration', 'startingDate'=>'starting_date',
+                          'endingDate' => 'ending_date', 'group'=>'Groups.name'])
+                      ->contain('Groups')
                       ->hydrate(false);
-        return ArrayEntityBuilder::build($query);
+        return ArrayEntityBuilder::buildAssocArray($query, 'group');
     }
 }

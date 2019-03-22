@@ -74,10 +74,10 @@ class GroupsTable extends Table
         foreach($groups as $group)
         {
             $entity[$group->name] = [
+                'group' => $group->name,
                 'areas' => $allocations->getAreasAssigned($group->id),
                 'regions' => $allocations->getRegionsAssigned($group->id),
-                'locations' => $allocations->getLocationsAssigned($group->id),
-                'schedules' => $schedules->getSchedulesByGroupId($group->id)
+                'locations' => $allocations->getLocationsAssigned($group->id)
             ];
         }
 

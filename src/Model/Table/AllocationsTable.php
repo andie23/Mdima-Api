@@ -68,7 +68,7 @@ class AllocationsTable extends Table
                       ->contain('Areas')
                       ->select(['area'=>'Areas.name'])
                       ->where(['Allocations.group_id'=>$groupId]);
-        return ArrayEntityBuilder::build($query, 'area');
+        return ArrayEntityBuilder::buildArrayList($query, 'area');
     }
     
     public function getRegionsAssigned($groupId)
@@ -81,7 +81,7 @@ class AllocationsTable extends Table
                       ->innerJoin('regions', 'locations.region_id=regions.id')
                       ->distinct('region');
     
-        return ArrayEntityBuilder::build($query, 'region');
+        return ArrayEntityBuilder::buildArrayList($query, 'region');
     }
 
     public function getLocationsAssigned($groupId){
@@ -91,7 +91,7 @@ class AllocationsTable extends Table
                       ->innerJoin('areas', 'areas.id=Allocations.area_id')
                       ->innerJoin('locations', 'locations.id=areas.location_id')
                       ->distinct('location');
-        return ArrayEntityBuilder::build($query, 'location');
+        return ArrayEntityBuilder::buildArrayList($query, 'location');
     }
 
     private function getGroupBy($id, $table)
@@ -105,7 +105,7 @@ class AllocationsTable extends Table
                       ->innerJoin('regions', 'regions.id=locations.region_id')
                       ->distinct('group_id')
                       ->hydrate(false);
-        return ArrayEntityBuilder::build($query, 'name');
+        return ArrayEntityBuilder::buildArrayList($query, 'name');
     }
 
     public function getGroupsByAreaId($areaId)

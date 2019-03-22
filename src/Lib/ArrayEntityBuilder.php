@@ -4,18 +4,24 @@ namespace App\Lib;
 
 class ArrayEntityBuilder
 {
-    public static function build($entities, $key=null)
+    public static function buildArrayList($entities, $index=null)
     {
         $arrayEntities = [];
 
-        foreach($entities as $index => $data)
+        foreach($entities as $data)
         {
-            if ($key){
-                $arrayEntities[$index] = $data[$key];
-            }else{
-                $arrayEntities[] = $data;
-            }
+            $arrayEntities[] = $data[$index];
         }
         return $arrayEntities;
+    }
+
+    public static function buildAssocArray($entities, $index)
+    {
+        $assocArrayEntities = [];
+        foreach ($entities as $entity)
+        {
+            $assocArrayEntities[$entity[$index]][]= $entity;
+        }
+        return $assocArrayEntities;
     }
 }

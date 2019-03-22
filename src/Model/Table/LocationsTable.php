@@ -79,6 +79,7 @@ class LocationsTable extends Table
         foreach($locations as $location)
         {
             $entities[$location->location] = [
+                'location' => $location->location,
                 'region' => $location->region,
                 'areas' => $areas->getAreasByLocationId($location->id),
                 'groups' => $allocations->getGroupsByLocationId($location->id)
@@ -95,7 +96,7 @@ class LocationsTable extends Table
                     ->where(['region_id'=>$regionId])
                     ->hydrate(false);
 
-        return ArrayEntityBuilder::build($query, 'name');
+        return ArrayEntityBuilder::buildArrayList($query, 'name');
     }
     /**
      * Returns a rules checker object that will be used for validating

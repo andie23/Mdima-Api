@@ -70,6 +70,7 @@ class RegionsTable extends Table
 
         foreach ($regions as $region){
             $entity[$region->name] = [
+               'region' => $region->name,
                'locations' => $locations->getLocationsByRegionId($region->id),
                'groups' => $allocations->getGroupsByRegionId($region->id)
             ];

@@ -74,7 +74,7 @@ class AreasTable extends Table
                     ->select('name')
                     ->where(['location_id'=>$locationId]);
         
-        return ArrayEntityBuilder::build($query, 'name');
+        return ArrayEntityBuilder::buildArrayList($query, 'name');
     }
    
     public function getAllAreas()
@@ -97,6 +97,7 @@ class AreasTable extends Table
 
         foreach ($areas as $area){
             $entity[$area->area] = [
+               'area' => $area->area,
                'location' => $area->location,
                'region' => $area->region,
                'groups' => $allocations->getGroupsByAreaId($area->id)
