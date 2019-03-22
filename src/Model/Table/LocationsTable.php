@@ -59,23 +59,26 @@ class LocationsTable extends Table
         return $validator;
     }
 
-    public function getAllLocations()
+    public function getAllLocationDataByRegions()
     {
-        return $this->find()
-                        ->select(['id'=>'Locations.id', 'region'=>'Regions.name',
-                        'location' => 'Locations.name'
-                        ])
-                      ->contain('Regions')
-                      ->all();
+        $groupedLocations = [];
+        $regions = TableRegistry::get('regions')->find()->all();
+
+        foreach($regions as $region)
+        {
+            $groupedLocations[$region->name] = $this->getLocationData(['region_id' => $region->id]);
+        }
+        return $groupedLocations;
     }
 
-    public function getAllLocationsAndChildren()
+    public function getLocationData($condition)
     {
         $entities = [];
         $areas = TableRegistry::get('areas');
         $allocations = TableRegistry::get('allocations');
-        $locations = $this->getAllLocations();
-
+        $regions = TableRegistry::get('regions')->getAllRegions();
+        $locations = $this->getAllLocations($condition);
+        
         foreach($locations as $location)
         {
             $entities[$location->location] = [
@@ -85,19 +88,28 @@ class LocationsTable extends Table
                 'groups' => $allocations->getGroupsByLocationId($location->id)
             ];
         }
-
         return $entities;
     }
 
-    public function getLocationsByRegionId($regionId)
-    {
-        $query = $this->find()
-                    ->select(['name'])
-                    ->where(['region_id'=>$regionId])
-                    ->hydrate(false);
 
-        return ArrayEntityBuilder::buildArrayList($query, 'name');
+    public function getAllLocations($conditions=[])
+    {
+        return $this->find()
+                        ->select(['id'=>'Locations.id', 'region'=>'Regions.name',
+                        'location' => 'Locations.name'
+                        ])
+                      ->where($conditions)
+                      ->contain('Regions');
     }
+
+    public function getLocationListForRegion($regionId)
+    {
+        return ArrayEntityBuilder::buildArrayList(
+            $this->getAllLocations(['
+                region_id'=>$regionId])->hydrate(false), 
+                'location');
+    }
+
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.

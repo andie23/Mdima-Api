@@ -28,9 +28,9 @@ class ApiController extends AppController
 
         $export = [
             'schedules' => $this->Schedules->getSchedules(),
-            'regions' => $this->Regions->getAllRegionsAndChildren(),
-            'locations' => $this->Locations->getAllLocationsAndChildren(),
-            'areas' => $this->Areas->getAllAreasAndChildren(), 
+            'regions' => $this->Regions->getAllRegionData(),
+            'locations' => $this->Locations->getAllLocationDataByRegions(),
+            'areas' => $this->Areas->getAllAreaDataByLocations(), 
             'groups' => $this->Groups->getAllGroupsAndChildren()
         ];
         echo json_encode($export);
@@ -39,19 +39,19 @@ class ApiController extends AppController
     public function regions()
     {
         $this->loadModel('Regions');
-        echo json_encode($this->Regions->getAllRegionsAndChildren());
+        echo json_encode($this->Regions->getAllRegionData());
     }
 
     public function locations()
     {
         $this->loadModel('Locations');
-        echo json_encode($this->Locations->getAllLocationsAndChildren());
+        echo json_encode($this->Locations->getAllLocationDataByRegions());
     }
 
     public function areas()
     {
         $this->loadModel('Areas');
-        echo json_encode($this->Areas->getAllAreasAndChildren());
+        echo json_encode($this->Areas->getAllAreaDataByLocations());
     }
     
     public function schedules()

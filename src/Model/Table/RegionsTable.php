@@ -57,11 +57,10 @@ class RegionsTable extends Table
     public function getAllRegions()
     {
         return $this->find()
-                    ->select()
                     ->all();
     }
 
-    public function getAllRegionsAndChildren()
+    public function getAllRegionData()
     {
         $entity = [];
         $locations = TableRegistry::get('locations');
@@ -71,7 +70,7 @@ class RegionsTable extends Table
         foreach ($regions as $region){
             $entity[$region->name] = [
                'region' => $region->name,
-               'locations' => $locations->getLocationsByRegionId($region->id),
+               'locations' => $locations->getLocationListForRegion($region->id),
                'groups' => $allocations->getGroupsByRegionId($region->id)
             ];
         }

@@ -77,7 +77,7 @@ class AreasTable extends Table
         return ArrayEntityBuilder::buildArrayList($query, 'name');
     }
    
-    public function getAllAreas()
+    public function getAllAreas($conditions=[])
     {
         return $this->find()
                     ->select([
@@ -85,15 +85,16 @@ class AreasTable extends Table
                         'location'=>'Locations.name',
                         'region' => 'regions.name'
                     ])
+                    ->where($conditions)
                     ->innerJoin('locations', 'locations.id=Areas.location_id')
                     ->innerJoin('regions', 'regions.id=Locations.region_id');
     }
 
-    public function getAllAreasAndChildren()
+    public function getAllAreaData($conditions=[])
     {
         $entity = [];
         $allocations = TableRegistry::get('allocations');
-        $areas = $this->getAllAreas();
+        $areas = $this->getAllAreas($conditions);
 
         foreach ($areas as $area){
             $entity[$area->area] = [
@@ -104,6 +105,18 @@ class AreasTable extends Table
             ];
         }
         return $entity;
+    }
+
+    public function getAllAreaDataByLocations()
+    {
+        $groupedAreas = [];
+        $locations= TableRegistry::get('locations')->find()->all();
+
+        foreach($locations as $location)
+        {
+            $groupedAreas[$location->name] = $this->getAllAreaData(['locations.id' => $location->id]);
+        }
+        return $groupedAreas;
     }
 
     public function getAreasGroupedIntoRegions()
