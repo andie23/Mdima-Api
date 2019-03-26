@@ -47,6 +47,7 @@ Router::scope('/api/v0.1', function($routes){
     $routes->connect('/locations', ['controller'=>'Api', 'action'=>'locations', 'Locations']);
     $routes->connect('/areas', ['controller'=>'Api', 'action'=>'areas', 'Areas']);
     $routes->connect('/schedules', ['controller'=>'Api', 'action'=>'schedules', 'Schedules']);
+    $routes->connect('/groups', ['controller'=>'Api', 'action'=>'groups', 'Groups']);
 });
 
 Router::scope('/', function ($routes) {
