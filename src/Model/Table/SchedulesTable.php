@@ -87,7 +87,7 @@ class SchedulesTable extends Table
     {
         $query = $this->find()
                       ->select([
-                          'name', 'duration', 'startingDate'=>'starting_date',
+                          'name' => 'Schedules.name', 'duration', 'startingDate'=>'starting_date',
                           'endingDate' => 'ending_date', 'group'=>'Groups.name'])
                       ->contain('Groups')
                       ->hydrate(false);

@@ -57,7 +57,7 @@ class ApiController extends AppController
     public function schedules()
     {
         $this->loadModel('Schedules');
-        echo json_encode($this->Groups->getSchedules());
+        echo json_encode($this->Schedules->getSchedules());
     }
 
     public function groups()
