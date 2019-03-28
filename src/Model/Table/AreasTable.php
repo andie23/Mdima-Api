@@ -99,16 +99,17 @@ class AreasTable extends Table
 
         foreach ($areas as $area){
             $blackoutDates = $schedules->getAreaBlackoutDates($area->id);
+            $areaGroup = $allocations->getAreaBlackoutGroup($area->id);
             $entity[$area->area] = [
                'area' => $area->area,
                'location' => $area->location,
                'region' => $area->region,
-               'group' => $allocations->getAreaBlackoutGroup($area->id),
+               'group' => $areaGroup['name'],
                'startsOn' => $blackoutDates['startingDate'] ,
                'endsOn' => $blackoutDates['endingDate'],
                'numberOfBlackouts' => $schedules->getAreaBlackoutCount($area->id),
                'averageDuration' => $schedules->getAreaAvgBlackoutDurition($area->id),
-               'similarAreasAffected' => 0,
+               'similarAreasAffected' => $allocations->getRelatedAffectedAreasCount($area->id, $areaGroup['groupId'])
             ];
         }
         return $entity;

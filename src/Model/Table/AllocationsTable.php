@@ -110,12 +110,25 @@ class AllocationsTable extends Table
 
     public function getAreaBlackoutGroup($areaId)
     {
+        $name = 'name';
+        $groupId = 'groupId';
         $query = $this->find()
-                    ->select(['name' => 'Groups.name'])
+                    ->select(['name' => 'Groups.name', 'groupId'  => 'Groups.id'])
                     ->contain('Groups')
                     ->where(['area_id' => $areaId])
                     ->max('group_id');
-        return $query!=null ? $query->name : "";
+        return $query!=null ? [$name => $query->name, $groupId=>$query->groupId] : 
+            [$name => '', $groupId=>''];
+    }
+
+    public function getRelatedAffectedAreasCount($areaId, $group)
+    {
+        $query = $this->find()
+                      ->where([
+                            'area_id !='=> $areaId,
+                            'group_id'=>$group
+                       ])->count('area_id');
+        return $query!=null ? $query : 0;
     }
 
     private function getAreasCountAffected($id, $table)
