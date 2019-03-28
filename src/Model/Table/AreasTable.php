@@ -124,7 +124,12 @@ class AreasTable extends Table
 
         foreach($locations as $location)
         {
-            $groupedAreas[$location->name] = $this->getAllAreaData(['locations.id' => $location->id]);
+            $areas = $this->getAllAreaData(['locations.id' => $location->id]);
+            if(!empty($areas))
+            {
+                $groupedAreas[$location->name] = $areas;
+            }
+
         }
         return $groupedAreas;
     }
