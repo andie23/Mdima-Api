@@ -108,6 +108,16 @@ class AllocationsTable extends Table
         return ArrayEntityBuilder::buildArrayList($query, 'name');
     }
 
+    public function getAreaBlackoutGroup($areaId)
+    {
+        $query = $this->find()
+                    ->select(['name' => 'Groups.name'])
+                    ->contain('Groups')
+                    ->where(['area_id' => $areaId])
+                    ->max('group_id');
+        return $query!=null ? $query->name : "";
+    }
+
     private function getAreasCountAffected($id, $table)
     {
 
@@ -130,7 +140,7 @@ class AllocationsTable extends Table
     {
         return $this->getAreasCountAffected($locationId, 'locations');
     }
-    
+
     public function getRegionBlackoutCount($regionId)
     {
         return $this->getBlackoutCount($regionId, 'regions');
