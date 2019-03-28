@@ -78,14 +78,16 @@ class LocationsTable extends Table
         $allocations = TableRegistry::get('allocations');
         $regions = TableRegistry::get('regions')->getAllRegions();
         $locations = $this->getAllLocations($condition);
-        
+        $schedules = TableRegistry::get('schedules');
+
         foreach($locations as $location)
         {
             $entities[$location->location] = [
                 'location' => $location->location,
                 'region' => $location->region,
-                'areas' => $areas->getAreasByLocationId($location->id),
-                'groups' => $allocations->getGroupsByLocationId($location->id)
+                'areas' => count($areas->getAreasByLocationId($location->id)),
+                'numberOfBlackouts' => $schedules->getLocationBlackoutCount($location->id),
+                'numberOfAreasAffected' => $allocations->getBlackoutAreasByLocation($location->id)
             ];
         }
         return $entities;

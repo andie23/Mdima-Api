@@ -100,6 +100,12 @@ class SchedulesTable extends Table
     {
         return $this->getBlackoutCount($regionId, 'regions');
     }
+
+    public function getLocationBlackoutCount($locationId)
+    {
+        return $this->getBlackoutCount($locationId, 'locations');
+    }
+
     public function getSchedules()
     {
         $query = $this->find()

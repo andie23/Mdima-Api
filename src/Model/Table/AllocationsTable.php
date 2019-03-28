@@ -126,6 +126,11 @@ class AllocationsTable extends Table
         return $this->getAreasCountAffected($regionId, 'regions');
     }
 
+    public function getBlackoutAreasByLocation($locationId)
+    {
+        return $this->getAreasCountAffected($locationId, 'locations');
+    }
+    
     public function getRegionBlackoutCount($regionId)
     {
         return $this->getBlackoutCount($regionId, 'regions');
