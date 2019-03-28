@@ -68,6 +68,13 @@ class AreasTable extends Table
                     ->where(['Locations.region_id'=>$regionId]);
     }
 
+    public function getAreaIndex()
+    {
+        return ArrayEntityBuilder::buildAssocArray(
+            $this->getAllAreas()->hydrate(false), 'area'
+        );
+    }
+
     public function getAreasByLocationId($locationId)
     {
         $query = $this->find()

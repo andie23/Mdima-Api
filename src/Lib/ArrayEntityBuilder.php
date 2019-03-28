@@ -20,7 +20,7 @@ class ArrayEntityBuilder
         $assocArrayEntities = [];
         foreach ($entities as $entity)
         {
-            $assocArrayEntities[$entity[$index]][]= $entity;
+            $assocArrayEntities[$entity[$index]]= $entity;
         }
         return $assocArrayEntities;
     }
