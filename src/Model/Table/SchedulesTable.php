@@ -85,7 +85,7 @@ class SchedulesTable extends Table
 
     public function getBlackoutCount($id, $table)
     {
-        return $this->find()
+        $count = $this->find()
                     ->select(['blackouts' => "COUNT(DISTINCT Schedules.id)"])
                     ->where([__('{0}.id', $table) => $id])
                     ->innerJoin('allocations', 'Schedules.group_id=Allocations.group_id')
@@ -94,13 +94,33 @@ class SchedulesTable extends Table
                     ->innerJoin('regions', 'regions.id=locations.region_id')
                     ->first()
                     ->blackouts;
+        return $count!=null ? $count : 0;
+    }
+
+    private function getAverageBlackoutDuration($id, $table)
+    {
+        $average = $this->find()
+                    ->select(['average' => 'avg(schedules.duration)'])
+                    ->where([__('{0}.id', $table) => $id])
+                    ->innerJoin('allocations', 'allocations.group_id = Schedules.group_id')
+                    ->innerJoin('areas', 'areas.id=allocations.area_id')
+                    ->innerJoin('locations', 'locations.id=areas.location_id')
+                    ->innerJoin('regions', 'regions.id=locations.region_id')
+                    ->first()
+                    ->average;
+        return $average!= null ? (int) $average : 0;
+    }
+
+    public function getAreaAvgBlackoutDurition($areaId)
+    {
+        return $this->getAverageBlackoutDuration($areaId, 'areas');
     }
 
     public function getAreaBlackoutCount($areaId)
     {
         return $this->getBlackoutCount($areaId, 'areas');
     }
-    
+
     public function getRegionBlackoutCount($regionId)
     {
         return $this->getBlackoutCount($regionId, 'regions');

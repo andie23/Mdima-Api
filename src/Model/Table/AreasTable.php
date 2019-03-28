@@ -106,7 +106,7 @@ class AreasTable extends Table
                'startsOn' => '',
                'endsOn' => '',
                'numberOfBlackouts' => $schedules->getAreaBlackoutCount($area->id),
-               'averageDuration' => 0,
+               'averageDuration' => $schedules->getAreaAvgBlackoutDurition($area->id),
                'similarAreasAffected' => 0,
             ];
         }
