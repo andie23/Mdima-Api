@@ -108,19 +108,22 @@ class AllocationsTable extends Table
         return ArrayEntityBuilder::buildArrayList($query, 'name');
     }
 
-    private function getBlackoutCount($id, $table)
+    private function getAreasCountAffected($id, $table)
     {
+
         return $this->find()
-                      ->select([
-                          'number_of_areas' =>'COUNT(Allocations.id)',
-                          'number_of_blackouts' => 'COUNT(schedules.id)'
-                      ])
-                      ->where([__('{0}.id', $table) => $id])
-                      ->innerJoin('schedules', 'schedules.group_id=Allocations.group_id')
-                      ->innerJoin('areas', 'areas.id=Allocations.area_id')
-                      ->innerJoin('locations', 'areas.location_id=locations.id')
-                      ->innerJoin('regions', 'regions.id=locations.region_id')
-                      ->first();
+                    ->select(['blackouts' => 'COUNT(area_id)'])
+                    ->where([__('{0}.id', $table) => $id])
+                    ->innerJoin('areas', 'areas.id=Allocations.area_id')
+                    ->innerJoin('locations', 'locations.id=areas.location_id')
+                    ->innerJoin('regions', 'regions.id = locations.region_id')
+                    ->first()
+                    ->blackouts;
+    }
+
+    public function getBlackoutAreasByRegion($regionId)
+    {
+        return $this->getAreasCountAffected($regionId, 'regions');
     }
 
     public function getRegionBlackoutCount($regionId)

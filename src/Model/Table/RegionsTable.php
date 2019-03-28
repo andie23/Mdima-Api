@@ -72,7 +72,8 @@ class RegionsTable extends Table
             $entity[$region->name] = [
                'region' => $region->name,
                'numberOfLocations' => count($locations->getLocationListForRegion($region->id)),
-               'numberOfBlackouts' => $schedules->getRegionBlackoutCount($region->id)
+               'numberOfBlackouts' => $schedules->getRegionBlackoutCount($region->id),
+               'numberOfAreasAffected' => $allocations->getBlackoutAreasByRegion($region->id)
             ];
         }
         return $entity;
