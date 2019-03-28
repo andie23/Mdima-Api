@@ -87,8 +87,7 @@ class AreasTable extends Table
     public function getAllAreas($conditions=[])
     {
         return $this->find()
-                    ->select([
-                        'id' => 'Areas.id','area'=>'Areas.name', 
+                    ->select(['area'=>'Areas.name', 
                         'location'=>'Locations.name',
                         'region' => 'regions.name'
                     ])
