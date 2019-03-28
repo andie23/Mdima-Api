@@ -83,6 +83,23 @@ class SchedulesTable extends Table
         return $rules;
     }
 
+    public function getBlackoutCount($id, $table)
+    {
+        return $this->find()
+                    ->select(['blackouts' => "COUNT(DISTINCT Schedules.id)"])
+                    ->where([__('{0}.id', $table) => $id])
+                    ->innerJoin('allocations', 'Schedules.group_id=Allocations.group_id')
+                    ->innerJoin('areas', 'areas.id=Allocations.area_id')
+                    ->innerJoin('locations', 'areas.location_id=locations.id')
+                    ->innerJoin('regions', 'regions.id=locations.region_id')
+                    ->first()
+                    ->blackouts;
+    }
+
+    public function getRegionBlackoutCount($regionId)
+    {
+        return $this->getBlackoutCount($regionId, 'regions');
+    }
     public function getSchedules()
     {
         $query = $this->find()
