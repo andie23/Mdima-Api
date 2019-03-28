@@ -54,6 +54,18 @@ class RegionsTable extends Table
         return $validator;
     }
 
+    public function getRegionIndex()
+    {
+        $regionEntity = [];
+        $regions = $this->getAllRegions();
+        foreach($regions as $region)
+        {
+            $regionEntity[$region->name] = [
+                'region' => $region->name
+            ];
+        }
+        return $regionEntity;
+    }
     public function getAllRegions()
     {
         return $this->find()
