@@ -66,11 +66,13 @@ class RegionsTable extends Table
         $locations = TableRegistry::get('locations');
         $allocations = TableRegistry::get('allocations');
         $schedules = TableRegistry::get('schedules');
+        $areas = TableRegistry::get('areas');
         $regions = $this->getAllRegions();
 
         foreach ($regions as $region){
             $entity[$region->name] = [
                'region' => $region->name,
+               'numberOfAreas' => $areas->getAreasByRegionId($region->id)->count(),
                'numberOfLocations' => count($locations->getLocationListForRegion($region->id)),
                'numberOfBlackouts' => $schedules->getRegionBlackoutCount($region->id),
                'numberOfAreasAffected' => $allocations->getBlackoutAreasByRegion($region->id)
