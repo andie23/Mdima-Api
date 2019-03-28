@@ -96,6 +96,11 @@ class SchedulesTable extends Table
                     ->blackouts;
     }
 
+    public function getAreaBlackoutCount($areaId)
+    {
+        return $this->getBlackoutCount($areaId, 'areas');
+    }
+    
     public function getRegionBlackoutCount($regionId)
     {
         return $this->getBlackoutCount($regionId, 'regions');

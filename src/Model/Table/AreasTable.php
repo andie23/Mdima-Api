@@ -94,6 +94,7 @@ class AreasTable extends Table
     {
         $entity = [];
         $allocations = TableRegistry::get('allocations');
+        $schedules = TableRegistry::get('schedules');
         $areas = $this->getAllAreas($conditions);
 
         foreach ($areas as $area){
@@ -101,7 +102,12 @@ class AreasTable extends Table
                'area' => $area->area,
                'location' => $area->location,
                'region' => $area->region,
-               'groups' => $allocations->getGroupsByAreaId($area->id)
+               'group' => '',
+               'startsOn' => '',
+               'endsOn' => '',
+               'numberOfBlackouts' => $schedules->getAreaBlackoutCount($area->id),
+               'averageDuration' => 0,
+               'similarAreasAffected' => 0,
             ];
         }
         return $entity;
