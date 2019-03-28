@@ -98,13 +98,14 @@ class AreasTable extends Table
         $areas = $this->getAllAreas($conditions);
 
         foreach ($areas as $area){
+            $blackoutDates = $schedules->getAreaBlackoutDates($area->id);
             $entity[$area->area] = [
                'area' => $area->area,
                'location' => $area->location,
                'region' => $area->region,
                'group' => '',
-               'startsOn' => '',
-               'endsOn' => '',
+               'startsOn' => $blackoutDates['startingDate'] ,
+               'endsOn' => $blackoutDates['endingDate'],
                'numberOfBlackouts' => $schedules->getAreaBlackoutCount($area->id),
                'averageDuration' => $schedules->getAreaAvgBlackoutDurition($area->id),
                'similarAreasAffected' => 0,
@@ -113,6 +114,8 @@ class AreasTable extends Table
         return $entity;
     }
 
+    
+    
     public function getAllAreaDataByLocations()
     {
         $groupedAreas = [];

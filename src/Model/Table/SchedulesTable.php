@@ -97,6 +97,28 @@ class SchedulesTable extends Table
         return $count!=null ? $count : 0;
     }
 
+    public function getAreaBlackoutDates($areaId)
+    {
+        $startingDate = 'startingDate';
+        $endingDate = 'endingDate';
+        $blackoutDates = $this->find()
+                              ->select([
+                                  'starting_date' => 'min(starting_date)',
+                                  'ending_date' => 'max(ending_date)'
+                              ])
+                              ->innerJoin('allocations', 'allocations.group_id = schedules.group_id')
+                              ->where(['allocations.area_id' => $areaId])
+                              ->first();
+        if ($blackoutDates->starting_date!= null and $blackoutDates->ending_date!=null)
+        {
+            return [
+                $startingDate => $blackoutDates->starting_date,
+                $endingDate => $blackoutDates->ending_date
+            ];
+        }
+        return [$startingDate => "N/A", $endingDate => 'N/A'];
+    }
+
     private function getAverageBlackoutDuration($id, $table)
     {
         $average = $this->find()
