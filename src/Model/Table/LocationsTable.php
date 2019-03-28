@@ -94,10 +94,17 @@ class LocationsTable extends Table
     }
 
 
+    public function getLocationIndex()
+    {
+        return ArrayEntityBuilder::buildAssocArray(
+            $this->getAllLocations(), 'location'
+        );
+    }
+
     public function getAllLocations($conditions=[])
     {
         return $this->find()
-                        ->select(['id'=>'Locations.id', 'region'=>'Regions.name',
+                        ->select(['region'=>'Regions.name',
                         'location' => 'Locations.name'
                         ])
                       ->where($conditions)

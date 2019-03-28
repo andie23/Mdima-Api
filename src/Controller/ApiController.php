@@ -33,7 +33,7 @@ class ApiController extends AppController
             'areas' => $this->Areas->getAllAreaDataByLocations(), 
             'groups' => $this->Groups->getAllGroupsAndChildren(),
             'index' => [
-                'locations' => [],
+                'locations' => $this->Locations->getLocationIndex(),
                 'regions' => [],
                 'areas' => $this->Areas->getAreaIndex()
             ]
