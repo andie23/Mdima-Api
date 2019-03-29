@@ -153,6 +153,18 @@ class SchedulesTable extends Table
         return $this->getBlackoutCount($locationId, 'locations');
     }
 
+    public function getSchedulesByGroup($groupId)
+    {
+        $query = $this->find()
+                      ->select([
+                          'name' => 'Schedules.name', 'duration', 'startingDate'=>'starting_date',
+                          'endingDate' => 'ending_date', 'group'=>'Groups.name'])
+                      ->where(['group_id' => $groupId])
+                      ->contain('Groups')
+                      ->hydrate(false);
+        return ArrayEntityBuilder::buildAssocArray($query, 'name');
+    }
+
     public function getSchedules()
     {
         $query = $this->find()
@@ -161,6 +173,6 @@ class SchedulesTable extends Table
                           'endingDate' => 'ending_date', 'group'=>'Groups.name'])
                       ->contain('Groups')
                       ->hydrate(false);
-        return ArrayEntityBuilder::buildAssocArray($query, 'group', true);
+        return ArrayEntityBuilder::buildAssocArray($query, 'name');
     }
 }

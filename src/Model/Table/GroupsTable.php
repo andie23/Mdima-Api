@@ -64,6 +64,19 @@ class GroupsTable extends Table
         return $this->find()->all();
     }
 
+    public function getGroupSchedules()
+    {
+        $entity = [];
+        $schedules = TableRegistry::get('schedules');
+        $groups = $this->getAllGroups();
+        
+        foreach($groups as $group)
+        {
+            $entity[$group->name] = $schedules->getSchedulesByGroup($group->id);
+        }
+        return $entity;
+    }
+
     public function getAllGroupsAndChildren()
     {
         $entity = [];

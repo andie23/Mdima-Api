@@ -29,7 +29,7 @@ class ApiController extends AppController
         
         $export = [
             'summary' => $this->Summary->getSummary(),
-            'schedules' => $this->Schedules->getSchedules(),
+            'schedules' => $this->Groups->getGroupSchedules(),
             'regions' => $this->Regions->getAllRegionData(),
             'locations' => $this->Locations->getAllLocationDataByRegions(),
             'areas' => $this->Areas->getAllAreaDataByLocations(), 
