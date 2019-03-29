@@ -85,7 +85,7 @@ class LocationsTable extends Table
             $entities[$location->location] = [
                 'location' => $location->location,
                 'region' => $location->region,
-                'areas' => count($areas->getAreasByLocationId($location->id)),
+                'areas' => (string) count($areas->getAreasByLocationId($location->id)),
                 'numberOfBlackouts' => $schedules->getLocationBlackoutCount($location->id),
                 'numberOfAreasAffected' => $allocations->getBlackoutAreasByLocation($location->id)
             ];

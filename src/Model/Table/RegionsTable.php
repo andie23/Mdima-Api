@@ -84,9 +84,9 @@ class RegionsTable extends Table
         foreach ($regions as $region){
             $entity[$region->name] = [
                'region' => $region->name,
-               'numberOfAreas' => $areas->getAreasByRegionId($region->id)->count(),
-               'numberOfLocations' => count($locations->getLocationListForRegion($region->id)),
-               'numberOfBlackouts' => $schedules->getRegionBlackoutCount($region->id),
+               'numberOfAreas' => (string) $areas->getAreasByRegionId($region->id)->count(),
+               'numberOfLocations' => (string) count($locations->getLocationListForRegion($region->id)),
+               'numberOfBlackouts' => (string) $schedules->getRegionBlackoutCount($region->id),
                'numberOfAreasAffected' => $allocations->getBlackoutAreasByRegion($region->id)
             ];
         }

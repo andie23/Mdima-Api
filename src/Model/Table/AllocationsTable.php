@@ -123,12 +123,12 @@ class AllocationsTable extends Table
 
     public function getRelatedAffectedAreasCount($areaId, $group)
     {
-        $query = $this->find()
+        $count = $this->find()
                       ->where([
                             'area_id !='=> $areaId,
                             'group_id'=>$group
                        ])->count('area_id');
-        return $query!=null ? $query : 0;
+        return $count !=null ? (string) $count : "0";
     }
 
     private function getAreasCountAffected($id, $table)
