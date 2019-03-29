@@ -60,4 +60,20 @@ class SummaryTable extends Table
 
         return $validator;
     }
+
+    public function getSummary()
+    {
+        $summary = $this->find()->first();
+        if($summary!=null){
+            return [
+                'areasAffected' => $summary->areas_affected,
+                'blackoutCount' => $summary->blackout_count,
+                'date' => $summary->date,
+                'startingDate' => $summary->starting_date,
+                'endingDate' => $summary->ending_date,
+                'regionsAffected' => $summary->regions_affected,
+            ];
+        }
+        return [];
+    }
 }
