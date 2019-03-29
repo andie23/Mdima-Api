@@ -15,11 +15,16 @@ class ArrayEntityBuilder
         return $arrayEntities;
     }
 
-    public static function buildAssocArray($entities, $index)
+    public static function buildAssocArray($entities, $index, $useNumbericIndex=false)
     {
         $assocArrayEntities = [];
         foreach ($entities as $entity)
         {
+            if($useNumbericIndex)
+            {
+                $assocArrayEntities[$entity[$index]][]= $entity;
+                continue;
+            }
             $assocArrayEntities[$entity[$index]]= $entity;
         }
         return $assocArrayEntities;

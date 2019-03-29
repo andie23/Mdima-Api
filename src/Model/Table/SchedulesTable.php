@@ -161,6 +161,6 @@ class SchedulesTable extends Table
                           'endingDate' => 'ending_date', 'group'=>'Groups.name'])
                       ->contain('Groups')
                       ->hydrate(false);
-        return ArrayEntityBuilder::buildAssocArray($query, 'group');
+        return ArrayEntityBuilder::buildAssocArray($query, 'group', true);
     }
 }
