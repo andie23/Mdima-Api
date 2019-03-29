@@ -94,7 +94,7 @@ class SchedulesTable extends Table
                     ->innerJoin('regions', 'regions.id=locations.region_id')
                     ->first()
                     ->blackouts;
-        return $count!=null ? $count : 0;
+        return $count!=null ? (int) $count : 0;
     }
 
     public function getAreaBlackoutDates($areaId)
@@ -130,7 +130,7 @@ class SchedulesTable extends Table
                     ->innerJoin('regions', 'regions.id=locations.region_id')
                     ->first()
                     ->average;
-        return $average!= null ?  $average : 0;
+        return $average!= null ? (int) $average : 0;
     }
 
     public function getAreaAvgBlackoutDurition($areaId)

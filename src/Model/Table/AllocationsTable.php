@@ -128,13 +128,13 @@ class AllocationsTable extends Table
                             'area_id !='=> $areaId,
                             'group_id'=>$group
                        ])->count('area_id');
-        return $count !=null ? (string) $count : "0";
+        return $count !=null ?  (int) $count : 0;
     }
 
     private function getAreasCountAffected($id, $table)
     {
 
-        return $this->find()
+        $count = $this->find()
                     ->select(['blackouts' => 'COUNT(area_id)'])
                     ->where([__('{0}.id', $table) => $id])
                     ->innerJoin('areas', 'areas.id=Allocations.area_id')
@@ -142,6 +142,7 @@ class AllocationsTable extends Table
                     ->innerJoin('regions', 'regions.id = locations.region_id')
                     ->first()
                     ->blackouts;
+        return $count!=null ? (int) $count : 0;
     }
 
     public function getBlackoutAreasByRegion($regionId)
