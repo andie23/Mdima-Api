@@ -25,8 +25,9 @@ class ApiController extends AppController
         $this->loadModel('Areas');
         $this->loadModel('Groups');
         $this->loadModel('Schedules');
-
+        $this->loadModel('Summary');
         $export = [
+            'summary' => $this->Summary->find()->hydrate(false)->first(),
             'schedules' => $this->Schedules->getSchedules(),
             'regions' => $this->Regions->getAllRegionData(),
             'locations' => $this->Locations->getAllLocationDataByRegions(),
