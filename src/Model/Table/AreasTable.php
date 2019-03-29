@@ -75,6 +75,16 @@ class AreasTable extends Table
         );
     }
 
+    public function getLocationAreaCount($locationId)
+    {
+        $count = $this->find()
+                      ->where([
+                          'location_id' => $locationId
+                      ])
+                      ->count();
+        return $count!=null ? $count : 0;
+    }
+
     public function getAreasByLocationId($locationId)
     {
         $query = $this->find()

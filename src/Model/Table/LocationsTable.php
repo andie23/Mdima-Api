@@ -85,7 +85,7 @@ class LocationsTable extends Table
             $entities[$location->location] = [
                 'location' => $location->location,
                 'region' => $location->region,
-                'areas' => (string) count($areas->getAreasByLocationId($location->id)),
+                'areas' => $areas->getLocationAreaCount($location->id),
                 'numberOfBlackouts' => $schedules->getLocationBlackoutCount($location->id),
                 'numberOfAreasAffected' => $allocations->getBlackoutAreasByLocation($location->id)
             ];
@@ -104,7 +104,9 @@ class LocationsTable extends Table
     public function getAllLocations($conditions=[])
     {
         return $this->find()
-                        ->select(['region'=>'Regions.name',
+                        ->select([
+                        'id' => 'Locations.id',
+                        'region'=>'Regions.name',
                         'location' => 'Locations.name'
                         ])
                       ->where($conditions)
