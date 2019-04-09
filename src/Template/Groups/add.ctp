@@ -21,6 +21,10 @@
             echo "<div class='form-group'>";
             echo $this->Form->input('name', ['class'=> 'form-control', 'placeholder' => 'E.g. GROUP A - 00-00-0000 - 00-00-0000',]);
             echo "</div>";
+           
+            echo "<div class='form-group'>";
+            echo $this->Form->input('programmes', ['class'=> 'form-control', 'options' => $programmes]);
+            echo "</div>";
         ?>
     <p/>
     <?= $this->Form->button(__('Submit'),['class' => 'btn btn-primary']) ?>

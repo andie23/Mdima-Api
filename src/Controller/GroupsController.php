@@ -55,6 +55,7 @@ class GroupsController extends AppController
                 $this->Flash->error(__('The group could not be saved. Please, try again.'));
             }
         }
+        $this->set('programmes', $this->Groups->Programmes->find('list', ['limit'=>100]));
         $this->set(compact('group'));
         $this->set('_serialize', ['group']);
     }
