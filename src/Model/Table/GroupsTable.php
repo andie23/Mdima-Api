@@ -31,6 +31,10 @@ class GroupsTable extends Table
         $this->displayField('name');
         $this->primaryKey('id');
 
+        $this->belongsTo('Programmes',[
+            'foreignKey' => 'programme_id'
+        ]);
+
         $this->hasMany('Allocations', [
             'foreignKey' => 'group_id'
         ]);
@@ -56,6 +60,10 @@ class GroupsTable extends Table
             ->notEmpty('name')
             ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
+        $validator
+            ->requirePresence('programme_id', 'create')
+            ->notEmpty('programme_id');
+            
         return $validator;
     }
 
@@ -95,6 +103,12 @@ class GroupsTable extends Table
         }
 
         return $entity;
+    }
+
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['programme_id'], 'Programmes'));
+        return $rules;
     }
 
 }
