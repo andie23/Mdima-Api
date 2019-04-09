@@ -43,6 +43,7 @@ Router::defaultRouteClass('DashedRoute');
 
 Router::scope('/api/v0.1', function($routes){
     $routes->connect('/', ['controller'=>'Api', 'action'=>'index', 'All']);
+    $routes->connect('/search_index', ['controller'=>'Api', 'action'=>'search', 'All']);
     $routes->connect('/regions', ['controller'=>'Api', 'action'=>'regions', 'Regions']);
     $routes->connect('/locations', ['controller'=>'Api', 'action'=>'locations', 'Locations']);
     $routes->connect('/areas', ['controller'=>'Api', 'action'=>'areas', 'Areas']);

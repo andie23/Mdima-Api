@@ -70,8 +70,8 @@ class AreasTable extends Table
 
     public function getAreaIndex()
     {
-        return ArrayEntityBuilder::buildAssocArray(
-            $this->getAllAreas()->hydrate(false), 'area'
+        return ArrayEntityBuilder::buildNumericIndexedAssocArray(
+            $this->getAllAreas()->hydrate(false)
         );
     }
 

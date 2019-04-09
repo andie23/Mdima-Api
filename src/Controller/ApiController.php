@@ -33,14 +33,15 @@ class ApiController extends AppController
             'regions' => $this->Regions->getAllRegionData(),
             'locations' => $this->Locations->getAllLocationDataByRegions(),
             'areas' => $this->Areas->getAllAreaDataByLocations(), 
-            'groups' => $this->Groups->getAllGroupsAndChildren(),
-            'index' => [
-                'locations' => $this->Locations->getLocationIndex(),
-                'regions' => $this->Regions->getRegionIndex(),
-                'areas' => $this->Areas->getAreaIndex()
-            ]
+            'groups' => $this->Groups->getAllGroupsAndChildren()
         ];
         echo json_encode($export);
+    }
+
+    public function search()
+    {
+        $this->loadModel('Areas');
+        echo json_encode($this->Areas->getAreaIndex());
     }
 
     public function regions()
