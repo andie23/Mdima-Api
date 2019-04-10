@@ -58,6 +58,10 @@ return [
         'from' => 'example@localhost'
     ],
     
+    'RealTimeDatabase' => [
+        'rooturl' => 'https://www.example.com'
+    ],
+
     'Uploads' => [
         'dir' => WWW_ROOT . 'uploads\\',
         'exts' => [
