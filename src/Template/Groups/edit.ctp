@@ -31,6 +31,10 @@
             echo "<div class='form-group'>";
             echo $this->Form->input('name', ['class'=> 'form-control', 'placeholder' => 'name',]);
             echo "</div>";
+
+            echo "<div class='form-group'>";
+            echo $this->Form->input('programme_id', ['class'=> 'form-control', 'options' => $programmes]);
+            echo "</div>";
         ?>
     <p/>
     <?= $this->Form->button(__('Submit'),['class' => 'btn btn-primary']) ?>

@@ -18,6 +18,9 @@ class GroupsController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Programmes']
+        ];
         $this->set('groups', $this->paginate($this->Groups));
         $this->set('_serialize', ['groups']);
     }
@@ -32,7 +35,7 @@ class GroupsController extends AppController
     public function view($id = null)
     {
         $group = $this->Groups->get($id, [
-            'contain' => ['Allocations', 'Schedules']
+            'contain' => ['Allocations', 'Programmes' , 'Schedules']
         ]);
         $this->set('group', $group);
         $this->set('_serialize', ['group']);
@@ -74,6 +77,7 @@ class GroupsController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $group = $this->Groups->patchEntity($group, $this->request->data);
+ 
             if ($this->Groups->save($group)) {
                 $this->Flash->success(__('The group has been saved.'));
                 return $this->redirect(['action' => 'index']);
@@ -81,6 +85,7 @@ class GroupsController extends AppController
                 $this->Flash->error(__('The group could not be saved. Please, try again.'));
             }
         }
+        $this->set('programmes', $this->Groups->Programmes->find('list', ['limit'=>100]));
         $this->set(compact('group'));
         $this->set('_serialize', ['group']);
     }

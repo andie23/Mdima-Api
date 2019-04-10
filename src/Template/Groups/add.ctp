@@ -1,3 +1,12 @@
+<?php 
+    $title = "Add Group";
+    $programmeTextField =  $this->Form->input('programme_id', ['class'=> 'form-control', 'options' => $programmes]);
+    if($id = $this->request->query('programme_id') and $programme=$this->request->query('programme'))
+    {
+        $title = "New group for ". $programme;
+        $programmeTextField = $this->Form->input('programme_id', ['type'=>'hidden', 'value'=>$id]);
+    }
+?>
 <div class="row">
 <div class="col-md-2">
 <div class="list-group">
@@ -15,7 +24,7 @@
 <div class="col-md-10">   
     <?= $this->Form->create($group) ?>
     <div class="card">
-    <h5 class="card-header"> <?= __('Add Group') ?></h5>
+    <h5 class="card-header"> <?= $title ?></h5>
     <div class="card-body">
         <?php
             echo "<div class='form-group'>";
@@ -23,7 +32,7 @@
             echo "</div>";
            
             echo "<div class='form-group'>";
-            echo $this->Form->input('programmes', ['class'=> 'form-control', 'options' => $programmes]);
+            echo $programmeTextField;
             echo "</div>";
         ?>
     <p/>

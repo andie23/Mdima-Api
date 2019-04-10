@@ -21,15 +21,19 @@
     <h5 class="card-title">Details</h5>
     <p class="card-text">
     <table class="table">
-                                        <tr>
-                    <th><?= __('Name') ?></th>
-                    <td><?= h($group->name) ?></td>
-                </tr>
-                                                        <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($group->id) ?></td>
-                </tr>
-                                    </table>
+        <tr>
+            <th><?= __('Id') ?></th>
+            <td><?= $this->Number->format($group->id) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Name') ?></th>
+            <td><?= h($group->name) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Programme') ?></th>
+            <td><?= h($group->programme->name) ?></td>
+        </tr>
+    </table>
             <div class="related">
                 <h4><?= __('Area Allocations') ?></h4>
                 <?php if (!empty($group->allocations)): ?>

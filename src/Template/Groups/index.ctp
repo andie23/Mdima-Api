@@ -17,6 +17,7 @@
         <thead>
             <tr>
                 <th><?= $this->Paginator->sort('id') ?></th>
+                <th><?= $this->Paginator->sort('schedule') ?></th>
                 <th><?= $this->Paginator->sort('name') ?></th>
                 <th class="actions"><?= __('Options') ?></th>
             </tr>
@@ -25,6 +26,7 @@
             <?php foreach ($groups as $group): ?>
             <tr>
                 <td><?= $this->Number->format($group->id) ?></td>
+                <td><?= h($group->programme->name) ?></td>
                 <td><?= h($group->name) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('Add Schedules'), ['controller'=>'Schedules', 'action' => 'add', '?'=>['group_id' => $group->id]], ['class'=>'badge badge-primary']) ?>
