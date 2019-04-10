@@ -5,10 +5,11 @@ use Cake\Log\Log;
 use Cake\Network\Http\Client;
 
 class RealTimeDatabaseClient{
-    const POST = 'post';
-    const GET = 'get';
-    const PATCH = 'patch';
-    const DELETE = 'delete';
+    const POST = 'POST';
+    const GET = 'GET';
+    const PATCH = 'PATCH';
+    const DELETE = '_DELETE';
+    const PUT = 'PUT';
 
     function __construct($route=[])
     {
@@ -32,29 +33,43 @@ class RealTimeDatabaseClient{
     private function request($type, $data){
         $http = new Client();
         $baseUrl = $this->requestUrl;
-        $dataRequestUrl = $baseUrl.'json';
+        $dataRequestUrl = __('{0}.json', $baseUrl);
         $response = null;
 
         if ($type == self::POST){
             $data = json_encode($data);
-            $response = $http->post($dataRequestUrl, $data);
-            Log::write('debug', __('POSTING to {0} with {1}', $dataRequestUrl, $data));
+            $response = $http->post($dataRequestUrl, $data); 
+        }elseif($type == self::PUT){
+            $data = json_encode($data);
+            $response = $http->put($dataRequestUrl, $data); 
         }elseif($type == self::GET){
-            $request = __('{0}/{1}.json', $baseUrl, $data);
-            $response = $http->get($request);
-            Log::write('debug', __('GETTING {0}', $request));
+            $dataRequestUrl = __('{0}/{1}.json', $baseUrl, $data);
+            $response = $http->get($dataRequestUrl);
+            $data = '';
         }elseif($type == self::DELETE){
-            $request = __('{0}/{1}.json', $baseUrl, $data);
-            $response = $http->delete($request);
-            Log::write('debug', __('DELETING {0}', $request));
+            $dataRequestUrl = __('{0}/{1}.json', $baseUrl, $data);
+            $response = $http->delete($dataRequestUrl);
+            $data = '';
         }elseif($type == self::PATCH){
             $data = json_encode($data);
             $response = $http->patch($dataRequestUrl, $data);
-            Log::write('debug', __('PATCHING {0} with {1}', $dataRequestUrl, $data));
+        }
+
+        Log::write('debug', __('Request type: {0}, Url: {1} Data: {2}', $type, $dataRequestUrl, $data));
+        if ($response){
+            Log::write('debug', __('Code {0}', $response->code));
         }
         return $response;
     }
 
+    public function put($data) 
+    {
+        if ($response=$this->request(self::PUT, $data)){
+             return $response->code == 200;  
+        }
+        return false;
+    }
+    
     public function add($data) 
     {
         if ($response=$this->request(self::POST, $data)){
