@@ -27,13 +27,13 @@
             <tr>
                 <td><?= $this->Number->format($programme->id) ?></td>
                 <td><?= h($programme->name) ?></td>
-                <td><?= h($programme->is_published) ?></td>
-                <td><?= h($programme->is_notified) ?></td>
+                <td><?= h($programme->is_published) ? "Yes" : "No"  ?></td>
+                <td><?= h($programme->is_notified) ? "Yes" : "No" ?></td>
                 <td><?= h($programme->created) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('Details'), ['action' => 'view', $programme->id]) ?>
-                    <?= $this->Html->link(__('Modify'), ['action' => 'edit', $programme->id]) ?>
-                    <?= $this->Form->postLink(__('Remove'), ['action' => 'delete', $programme->id], ['confirm' => __('Are you sure you want to delete # {0}?', $programme->id)]) ?>
+                    <?= $this->Html->link(__('Details'), ['action' => 'view', $programme->id], ['class'=>'badge badge-primary']) ?>
+                    <?= $this->Html->link(__('Modify'), ['action' => 'edit', $programme->id], ['class'=>'badge badge-primary']) ?>
+                    <?= $this->Form->postLink(__('Remove'), ['action' => 'delete', $programme->id], ['class'=>'badge badge-danger', 'confirm' => __('Are you sure you want to delete # {0}?', $programme->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
