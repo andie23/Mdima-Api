@@ -15,7 +15,6 @@ class RealTimeDatabaseClient{
         if (!$route){ throw new \Exception("Invalid Route!"); }
         
         $rootUrl = Configure::read('RealTimeDatabase.rooturl');
-        $this->requestUrl = $rootUrl;
         $this->requestUrl = __('{0}/{1}', $rootUrl, implode("/", $route));
         Log::write('debug', __('Using url {0}', $this->requestUrl));
     }
@@ -70,6 +69,7 @@ class RealTimeDatabaseClient{
         }
         return null;
     }
+    
     public function get($route) {
         if(!$route){return null;}
         
