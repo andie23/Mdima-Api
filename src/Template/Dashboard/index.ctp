@@ -28,7 +28,7 @@
                         <h3 class="name">Firebase Synchronisation </h3>
                         <p class="description">Synchronise web database with firebase/mobile devices</p>
                         <a href="<?= $this->url->build(['controller'=>'Dashboard', 'action'=>'sync_firebase'])?>" class="badge badge-primary">Sync</a>
-                        <a href="<?= $this->url->build(['controller'=>'Dashboard', 'action'=>'notify_clients'])?>" class="badge badge-primary">Notify</a>
+                        <a href="<?= $this->url->build(['controller'=>'Dashboard', 'action'=>'send_schedule_notification'])?>" class="badge badge-primary">Notify</a>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-5 col-lg-4 item">
