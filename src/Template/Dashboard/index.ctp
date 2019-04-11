@@ -1,8 +1,8 @@
 <div class="features-boxed">
         <div class="container">
             <div class="intro">
-                <h2 class="text-center"><?= $this->Html->image('logo.png')?></h2>
-                <p class="text-center">Welcome to Mdima Panel. This is where you can manage loadshedding schedules for android clients to consume</p>
+                <h2 class="text-center">Admin Console</h2>
+                <p class="text-center">Welcome to Mdima Panel. This is where you can manage loadshedding schedules for android clients</p>
             </div>
             <div class="row justify-content-center features">
                 <div class="col-sm-6 col-md-5 col-lg-4 item">
