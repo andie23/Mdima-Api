@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use App\Lib\RealTimeDatabaseClient;
 use App\Lib\CloudMessagingClient;
+use App\Lib\SearchIndexClient;
 /**
  * Dashboard Controller
  *
@@ -22,6 +23,41 @@ class DashboardController extends AppController
        
     }
 
+    public function clearAreaIndex(){
+        if($this->request->is('post'))
+        {
+            $searchIndex = new SearchIndexClient();
+            if($searchIndex->clear())
+            {
+                $this->Flash->success('Search index has been cleared');
+            }else{
+                $this->Flash->error('An error has occured while flashing index');
+            }
+            return $this->redirect(['action'=>'index']);
+        }
+    }
+
+    public function indexAllAreas(){
+
+        if($this->request->is('post'))
+        {
+            $this->loadModel('Areas');
+            $searchIndex = new SearchIndexClient();
+            $batch = $searchIndex->buildBatch(
+                $searchIndex::UPDATE_BATCH_REQUEST, $this->Areas->getAllAreas()
+            );
+    
+            if($searchIndex->indexBatch($batch))
+            {
+                $this->Flash->success('Areas have been indexed!');
+            }else{
+                $this->Flash->error('Failed to index areas');
+            }
+    
+            return $this->redirect(['action'=>'index']);
+        }
+    }
+    
     public function syncFirebase()
     {
         $this->loadModel('Regions');

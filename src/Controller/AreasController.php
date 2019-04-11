@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-
+use App\Lib\SearchIndexClient;
 /**
  * Areas Controller
  *
@@ -52,6 +52,16 @@ class AreasController extends AppController
         if ($this->request->is('post')) {
             $area = $this->Areas->patchEntity($area, $this->request->data);
             if ($this->Areas->save($area)) {
+                $this->loadModel('Locations');
+                $this->loadModel('Regions');
+                $location = $this->Locations->get($area->location_id);
+                $searchIndex = new SearchIndexClient();
+                $searchIndex->index([
+                    'objectID' => $area->id,
+                    'area' => $area->name,
+                    'region' => $this->Regions->get($location->region_id)->name,
+                    'location' => $location->name
+                ]);
                 $this->Flash->success(__('The area has been saved.'));
                 if($locationId=$this->request->query('location_id')){
                     return $this->redirect(['action'=>'add', '?'=>['location_id'=>$locationId]]);
@@ -81,6 +91,16 @@ class AreasController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $area = $this->Areas->patchEntity($area, $this->request->data);
             if ($this->Areas->save($area)) {
+                $this->loadModel('Locations');
+                $this->loadModel('Regions');
+                $location = $this->Locations->get($area->location_id);
+                $searchIndex = new SearchIndexClient();
+                $searchIndex->index([
+                    'objectID' => $area->id,
+                    'area' => $area->name,
+                    'region' => $this->Regions->get($location->region_id)->name,
+                    'location' => $location->name
+                ]);
                 $this->Flash->success(__('The area has been saved.'));
                 return $this->redirect(['action' => 'index']);
             } else {
@@ -104,6 +124,8 @@ class AreasController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $area = $this->Areas->get($id);
         if ($this->Areas->delete($area)) {
+            $searchIndex = new SearchIndexClient();
+            $searchIndex->delete($area->id);
             $this->Flash->success(__('The area has been deleted.'));
         } else {
             $this->Flash->error(__('The area could not be deleted. Please, try again.'));

@@ -34,7 +34,20 @@
                 <div class="col-sm-6 col-md-5 col-lg-4 item">
                     <div class="box"><i class="fa fa-search icon"></i>
                         <h3 class="name">Algoria Synchronisation </h3>
-                        <p class="description">Synchronise areas with algoria search index</p></div>
+                        <p class="description">Index operations in bulk</p>
+                        <?= $this->Form->postLink(
+                                 __('Clear Index'),
+                                ['action' => 'clear_area_index'],
+                                ['class' => 'badge badge-danger', 'confirm' => __('Are you sure you want to clear search index? Clients will affected')]
+                            )
+                        ?>
+                        <?= $this->Form->postLink(
+                                 __('Update index'),
+                                ['action' => 'index_all_areas'],
+                                ['class' => 'badge badge-success', 'confirm' => __('Are you sure you want to update the index?')]
+                            )
+                        ?>
+                        </div>
                 </div>
                 <div class="col-sm-6 col-md-5 col-lg-4 item">
                     <div class="box"><i class="fa fa-user-circle icon"></i>
