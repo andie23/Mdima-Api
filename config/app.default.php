@@ -58,6 +58,7 @@ return [
         'from' => 'example@localhost'
     ],
     'SearchIndexer' => [
+        'index' => '',
         'applicaton_id' => '',
         'admin_api_key' => '',
     ],
