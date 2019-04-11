@@ -57,7 +57,10 @@ return [
     'DefaultEmailAddress' => [
         'from' => 'example@localhost'
     ],
-    
+    'CloudMessaging' => [
+        'url'  => '',
+        'authorization' => '' 
+    ],
     'RealTimeDatabase' => [
         'rooturl' => 'https://www.example.com'
     ],
