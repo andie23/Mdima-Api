@@ -31,25 +31,37 @@ class DashboardController extends AppController
         $this->loadModel('Schedules');
         $this->loadModel('Summary');
         
-        $summary = new RealTimeDatabaseClient(['summary']);
-        $schedule = new RealTimeDatabaseClient(['schedules']);
-        $regions = new RealTimeDatabaseClient(['regions']);
-        $locations = new RealTimeDatabaseClient(['locations']);
-        $areas = new RealTimeDatabaseClient(['areas']);
+        $export = [
+            'summary' => $this->Summary->getSummary(),
+            'schedules' => $this->Groups->getGroupSchedules(),
+            'regions' => $this->Regions->getAllRegionData(),
+            'locations' => $this->Locations->getAllLocationDataByRegions(),
+            'areas' => $this->Areas->getAllAreaDataByLocations()
+        ];
 
-        try{
-            if($summary->put($this->Summary->getSummary()) and  $schedule->put($this->Groups->getGroupSchedules())
-                 and $regions->put($this->Regions->getAllRegionData()) and $locations->put($this->Locations->getAllLocationDataByRegions())
-                 and $areas->put($this->Areas->getAllAreaDataByLocations())){
-                $this->Flash->success('Data is now available to firebase users');
-            }else{
-                $this->Flash->error('Failed to sync data with firebase');
+        if($this->request->is('post'))
+        {
+            $summary = new RealTimeDatabaseClient(['summary']);
+            $schedule = new RealTimeDatabaseClient(['schedules']);
+            $regions = new RealTimeDatabaseClient(['regions']);
+            $locations = new RealTimeDatabaseClient(['locations']);
+            $areas = new RealTimeDatabaseClient(['areas']);
+
+            try{
+                if($summary->put($export['summary']) and  $schedule->put($export['schedules'])
+                     and $regions->put($export['regions']) and $locations->put($export['locations'])
+                     and $areas->put($export['areas'])){
+                    $this->Flash->success('Data is now available to firebase users');
+                }else{
+                    $this->Flash->error('Failed to sync data with firebase');
+                }
+            }catch(\Exception $e){
+                $this->Flash->error('An error occured! check your internet connection status');
             }
-        }catch(\Exception $e){
-            $this->Flash->error('An error occured! check your internet connection status');
+            return $this->redirect(['controller'=>'Dashboard', 'action' => 'index']);
         }
-        
-        return $this->redirect(['controller'=>'Dashboard', 'action' => 'index']);
+
+        $this->set('export', $export);
     }
 
     public function sendScheduleNotification()
@@ -65,9 +77,9 @@ class DashboardController extends AppController
 
         if($this->request->is('post'))
         {
-            $data = $this->request->data;
-            $title = $data['title'];
-            $body = $data['body'];
+            $export = $this->request->data;
+            $title = $export['title'];
+            $body = $export['body'];
             $messagingClient = new CloudMessagingClient();
 
             if($messagingClient->post($title, $body))
