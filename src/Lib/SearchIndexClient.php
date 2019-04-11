@@ -54,7 +54,6 @@ class SearchIndexClient {
         return $response;
     }
 
-
     public function index($data)
     {
        $this->request(
@@ -62,13 +61,21 @@ class SearchIndexClient {
         );
     }
     
+    public function clear()
+    {
+        $this->request(self::POST, __('{0}/clear',$this->baseUrl));
+    }
+
     public function delete($objectID)
     {
         $this->request(self::DELETE, __('{0}/{1}', $this->baseUrl, $objectID));
     }
 
-    public function indexBatch($batch)
+    public function indexBatch($data)
     {
+       $batch = [
+            'requests' => $data
+       ];
        $this->request(self::POST, __('{0}/batch', $this->baseUrl), $batch);
     }
 }
