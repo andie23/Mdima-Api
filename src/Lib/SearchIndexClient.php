@@ -1,82 +1,74 @@
 <?php 
 namespace App\Lib;
-use Algolia\AlgoliaSearch\SearchClient;
 use Cake\Core\Configure;
 use Cake\Log\Log;
+use Cake\Network\Http\Client;
 
 class SearchIndexClient {
+    const POST = 'POST';
+    const PUT = 'PUT';
+    const DELETE = '_DELETE';
+
     public function __construct()
     {
         $indexName = Configure::read('SearchIndexer.index');
         $appId = Configure::read('SearchIndexer.application_id');
         $apiKey = Configure::read('SearchIndexer.admin_api_key');
-
-        $this->searchClient = SearchClient::create($appId, $apiKey);
-        $this->index = $this->searchClient->initIndex($indexName);
+        $this->baseUrl = __('https://{0}.algolia.net/1/indexes/{1}', $appId, $indexName);
+        $this->headers = [
+            'headers' => [
+                'X-Algolia-API-Key' => $apiKey,
+                'X-Algolia-Application-Id' => $appId,
+                'Content-Type' => 'application/json'
+            ]
+        ];
+        Log::write('debug', __('Default url: {0} with headers: {1}', $this->baseUrl, json_encode($this->headers)));
     }
 
-    public function indexOne($data)
+    public function request($type, $url, $data=[])
     {
+        $http = new Client();
+        $jsonData = json_encode($data);
+        Log::write('debug', __('Request type {0}, body {1}, url {2}', $type, $jsonData, $url));    
         try{
-            Log::write('debug', __('Indexing record: {0}', json_encode($data)));
-             $this->index->saveObject($data);
+            switch($type){
+                case self::POST:
+                    $response = $http->post($url, $jsonData, $this->headers); 
+                    break;
+                case self::PUT:
+                    $response = $http->put($url, $jsonData, $this->headers); 
+                    break;
+                case self::DELETE:
+                    $response = $http->delete($url, $jsonData, $this->headers); 
+                    break;
+                default:
+                    $response = [];
+                    break;    
+            }
         }catch(\Exception $e)
         {
-            Log::write('error', __($e->getMessage()));
-            return false;
+            Log::write('error', $e->getMessage());
+            return [];
         }
-        return true;
+        Log::write('debug', __('Request response {0}', json_encode($response->body)));
+        return $response;
     }
 
-    public function deleteOne($data)
+
+    public function index($data)
     {
-        try{
-            Log::write('debug', __('Deleting object record: {0}', json_encode($data)));
-             $this->index->deleteObject($data);
-        }catch(\Exception $e)
-        {
-            Log::write('error', __($e->getMessage()));
-            return false;
-        }
-        return true;
+       $this->request(
+           self::PUT, __('{0}/{1}', $this->baseUrl, $data['objectID']), $data
+        );
+    }
+    
+    public function delete($objectID)
+    {
+        $this->request(self::DELETE, __('{0}/{1}', $this->baseUrl, $objectID));
     }
 
-    public function deleteAll($batch)
+    public function indexBatch($batch)
     {
-        try{
-            Log::write('debug', __('Deleting batch record: {0}', json_encode($batch)));
-             $this->index->deleteObjects($batch);
-        }catch(\Exception $e)
-        {
-            Log::write('error', __($e->getMessage()));
-            return false;
-        }
-        return true;
-    }
-
-    public function replaceAll($batch)
-    {
-        try{
-            Log::write('debug', __('Replace batch: {0}', json_encode($batch)));
-            $this->index->replaceAllObjects($batch, ['safe'=>true]);
-        }catch(\Exception $e)
-        {
-            Log::write('error', __($e->getMessage()));
-            return false;
-        }
-        return true;
-    }
-
-    public function batchIndex($batch)
-    {
-        try{
-            Log::write('debug', __('Index batch: {0}', json_encode($batch)));
-            $this->index->saveObjects($batch);
-        }catch(\Exception $e)
-        {
-            Log::write('error', __($e->getMessage()));
-            return false;
-        }
-       return true;
+       $this->request(self::POST, __('{0}/batch', $this->baseUrl), $batch);
     }
 }

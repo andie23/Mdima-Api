@@ -59,7 +59,7 @@ return [
     ],
     'SearchIndexer' => [
         'index' => '',
-        'applicaton_id' => '',
+        'application_id' => '',
         'admin_api_key' => '',
     ],
     'CloudMessaging' => [
