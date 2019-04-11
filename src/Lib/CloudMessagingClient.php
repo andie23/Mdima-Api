@@ -9,11 +9,13 @@ class CloudMessagingClient{
     function __construct()
     {
         $this->url = Configure::read('CloudMessaging.url');
-        $this->authKey = Configure::read('CloudMessaging.key');
+        $this->authKey = Configure::read('CloudMessaging.authorization');
         $this->topic = Configure::read('CloudMessaging.topic');
-        $this->requestHeader = [
-            'Authorization' => $this->authKey,
-            'Content-Type' => 'application/json'
+        $this->requestHeader = [ 
+            'headers' =>[
+                'Authorization' => $this->authKey,
+                'Content-Type' => 'application/json'
+            ]
         ];
         Log::write('debug', __('CloudMessaging header {0}', json_encode($this->requestHeader)));
     }
@@ -22,8 +24,8 @@ class CloudMessagingClient{
     {
         $notification = [
             'name' => self::IDENTIFIER_NAME,
-            'to' => __('//topics//{0}', $this->topic),
-            'name' => $title,
+            'to' => __('/topics/{0}', $this->topic),
+            'title' => $title,
             'body' => $body
         ];
 
@@ -31,7 +33,7 @@ class CloudMessagingClient{
             $notification['data'] = $data;
         }
         $jsonNotificationBody = json_encode($notification);
-        Log::write('debug', __('Notification body: {0}',$jsonNotificationBody));
+        Log::write('debug', __('Notification: {0}',$jsonNotificationBody));
         return $jsonNotificationBody;
     }
 
@@ -46,7 +48,19 @@ class CloudMessagingClient{
             Log::write('error', $e->getMessage());
             return false;
         }
-        Log::write('debug', 'Response '.$response);
-        return $response ? $response->code == 200 : false;
+
+        if ($response and $response->code == 200)
+        {
+            $responseBody = json_decode($response->body);
+            if(array_key_exists('failed', $responseBody) and $responseBody['failed']==1)
+            {
+                Log::write('debug', __('Failure response: {0}', $response->body));
+                return false;
+            }
+            Log::write('debug', __('Success response: {0}', $response->body));
+            return true;
+        }
+        Log::write('debug', __('Code: {0}, Response: {1}', $response->code, json_encode($response->body)));
+        return false;
     }
 }
