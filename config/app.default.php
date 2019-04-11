@@ -59,7 +59,8 @@ return [
     ],
     'CloudMessaging' => [
         'url'  => '',
-        'authorization' => '' 
+        'authorization' => '',
+        'topic' => ''
     ],
     'RealTimeDatabase' => [
         'rooturl' => 'https://www.example.com'
