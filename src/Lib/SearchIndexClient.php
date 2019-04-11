@@ -22,7 +22,33 @@ class SearchIndexClient {
              $this->index->saveObject($data);
         }catch(\Exception $e)
         {
-            Log::write('error', __('Indexing error: {0}', $e->getMessage()));
+            Log::write('error', __($e->getMessage()));
+            return false;
+        }
+        return true;
+    }
+
+    public function deleteOne($data)
+    {
+        try{
+            Log::write('debug', __('Deleting object record: {0}', json_encode($data)));
+             $this->index->deleteObject($data);
+        }catch(\Exception $e)
+        {
+            Log::write('error', __($e->getMessage()));
+            return false;
+        }
+        return true;
+    }
+
+    public function deleteAll($batch)
+    {
+        try{
+            Log::write('debug', __('Deleting batch record: {0}', json_encode($batch)));
+             $this->index->deleteObjects($batch);
+        }catch(\Exception $e)
+        {
+            Log::write('error', __($e->getMessage()));
             return false;
         }
         return true;
@@ -31,11 +57,11 @@ class SearchIndexClient {
     public function replaceAll($batch)
     {
         try{
-            Log::write('debug', __('Replacement batch: {0}', json_encode($batch)));
+            Log::write('debug', __('Replace batch: {0}', json_encode($batch)));
             $this->index->replaceAllObjects($batch, ['safe'=>true]);
         }catch(\Exception $e)
         {
-            Log::write('error', __('Index replacement error: {0}', $e->getMessage()));
+            Log::write('error', __($e->getMessage()));
             return false;
         }
         return true;
@@ -48,7 +74,7 @@ class SearchIndexClient {
             $this->index->saveObjects($batch);
         }catch(\Exception $e)
         {
-            Log::write('error', __('Batch indexing error: {0}', $e->getMessage()));
+            Log::write('error', __($e->getMessage()));
             return false;
         }
        return true;
