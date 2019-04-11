@@ -24,9 +24,17 @@ class CloudMessagingClient{
     {
         $notification = [
             'name' => self::IDENTIFIER_NAME,
-            'to' => __('/topics/{0}', $this->topic),
-            'title' => $title,
-            'body' => $body
+            'to' => __("/topics/{0}", $this->topic),
+            'notification' => [
+                'title' => $title,
+                'body' => $body
+            ],
+            'android' => [
+                'collapse_key' => 'You have received pending schedules',
+                'priority' => 'HIGH',
+                'ttl' => '259200s',
+                'badge' => '1',
+            ]
         ];
 
         if ($data){

@@ -59,17 +59,17 @@ class DashboardController extends AppController
 
         $title = 'Blackout schedule update';
         $body = __('{0} blackouts scheduled, {1} regions and {2} areas affected',
-            $loadsheddingSummary['blackoutCount'], $loadsheddingSummary['regionsAffected'],
+             $loadsheddingSummary['blackoutCount'], $loadsheddingSummary['regionsAffected'],
              $loadsheddingSummary['areasAffected']
         );
 
         if($this->request->is('post'))
         {
             $data = $this->request->data;
-            $title = $data['body'];
+            $title = $data['title'];
             $body = $data['body'];
             $messagingClient = new CloudMessagingClient();
-            
+
             if($messagingClient->post($title, $body))
             {
                 $this->Flash->success('Loadshedding notification has been sent!');
