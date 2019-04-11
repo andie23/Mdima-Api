@@ -5,6 +5,9 @@ use Cake\Log\Log;
 use Cake\Network\Http\Client;
 
 class SearchIndexClient {
+    const ADD_BATCH_REQUEST = 'addObject';
+    const UPDATE_BATCH_REQUEST = 'updateObject';
+    const DELETE_BATCH_REQUEST = 'deleteObject';
     const POST = 'POST';
     const PUT = 'PUT';
     const DELETE = '_DELETE';
@@ -29,7 +32,7 @@ class SearchIndexClient {
     {
         $http = new Client();
         $jsonData = json_encode($data);
-        Log::write('debug', __('Request type {0}, body {1}, url {2}', $type, $jsonData, $url));    
+        Log::write('debug', __('Request type {0}, url {1}, body {2}', $type, $url, $jsonData));    
         try{
             switch($type){
                 case self::POST:
@@ -63,19 +66,33 @@ class SearchIndexClient {
     
     public function clear()
     {
-        $this->request(self::POST, __('{0}/clear',$this->baseUrl));
+       $this->request(self::POST, __('{0}/clear',$this->baseUrl));
     }
 
     public function delete($objectID)
     {
-        $this->request(self::DELETE, __('{0}/{1}', $this->baseUrl, $objectID));
+        return $this->request(self::DELETE, __('{0}/{1}', $this->baseUrl, $objectID));
     }
 
-    public function indexBatch($data)
+    public function buildBatch($type, $rawEntities)
     {
-       $batch = [
-            'requests' => $data
-       ];
-       $this->request(self::POST, __('{0}/batch', $this->baseUrl), $batch);
+        $entities = ['requests' => []];
+
+        foreach($rawEntities as $entity)
+        {
+            $entity['objectID'] = $entity['id'];
+            unset($entity['id']);
+
+            $entities['requests'][] = [
+                'action' => $type,
+                'body' => $entity
+            ];
+        }
+        return $entities;
+    }
+
+    public function indexBatch($batch)
+    {
+       return $this->request(self::POST, __('{0}/batch', $this->baseUrl), $batch);
     }
 }
