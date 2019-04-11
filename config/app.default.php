@@ -57,6 +57,10 @@ return [
     'DefaultEmailAddress' => [
         'from' => 'example@localhost'
     ],
+    'SearchIndexer' => [
+        'applicaton_id' => '',
+        'admin_api_key' => '',
+    ],
     'CloudMessaging' => [
         'url'  => '',
         'authorization' => '',
