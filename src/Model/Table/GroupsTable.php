@@ -78,16 +78,23 @@ class GroupsTable extends Table
     {
         return $this->find()->all();
     }
-
+    public function getActiveGroups()
+    {
+        $activeProgramme = $this->Programmes->getActiveProgramme();
+        if ($activeProgramme){
+            return $this->find()
+                        ->where(['programme_id' => $activeProgramme->id]);
+        }
+        return [];
+    }
     public function getGroupSchedules()
     {
         $entity = [];
         $schedules = TableRegistry::get('schedules');
-        $groups = $this->getAllGroups();
-        
+        $groups = $this->getActiveGroups();
         foreach($groups as $group)
         {
-            $entity[$group->name] = $schedules->getSchedulesByGroup($group->id);
+            $entity[$group->id] = $schedules->getSchedulesByGroup($group->id);
         }
         return $entity;
     }
