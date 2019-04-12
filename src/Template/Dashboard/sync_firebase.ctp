@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-sm-3 col-md-3"> 
         <div class="list-group">
-            <?= $this->Form->postLink(__('Export to Firebase'), ['action' => 'sync_firebase'], ['class' => 'list-group-item list-group-item-action']) ?></li>
+            <?= $this->Form->postLink(__('Synchronise with Firebase'), ['action' => 'sync_firebase'], ['class' => 'list-group-item list-group-item-action']) ?></li>
         </div>
     </div>
 
