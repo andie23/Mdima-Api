@@ -92,7 +92,30 @@ class ProgrammesController extends AppController
         $this->set('_serialize', ['programme']);
     }
 
-    /**
+    public function publish($id)
+    {
+        $this->Programmes->unpublishActive();
+
+        if( $this->Programmes->publish($id))
+        {
+            $this->Flash->success('This programme has been as default, it will be synchronised with firebase.');
+        }else{
+            $this->Flash->error('Failed to set programme as default');
+        }
+        return $this->redirect(['action'=>'view', $id]);
+    }
+    
+    public function unpublish($id) 
+    {
+        if( $this->Programmes->unpublish($id))
+        {
+            $this->Flash->success('This programme wont be synchronised with firebase');
+        }else{
+            $this->Flash->error('Failed to unset programme as default');
+        }
+        return $this->redirect(['action'=>'view', $id]);
+    }
+        /**
      * Delete method
      *
      * @param string|null $id Programme id.
