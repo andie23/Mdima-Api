@@ -16,7 +16,7 @@
             <tr>
                 <th><?= $this->Paginator->sort('id') ?></th>
                 <th><?= $this->Paginator->sort('name') ?></th>
-                <th><?= $this->Paginator->sort('is_published') ?></th>
+                <th><?= $this->Paginator->sort('is_published', ['label'=>'Synchronizable']) ?></th>
                 <th><?= $this->Paginator->sort('is_notified') ?></th>
                 <th><?= $this->Paginator->sort('created') ?></th>
                 <th class="actions"><?= __('Options') ?></th>
@@ -28,7 +28,6 @@
                 <td><?= $this->Number->format($programme->id) ?></td>
                 <td><?= h($programme->name) ?></td>
                 <td><?= h($programme->is_published) ? "Yes" : "No"  ?></td>
-                <td><?= h($programme->is_notified) ? "Yes" : "No" ?></td>
                 <td><?= h($programme->created) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('Add groups'),['controller'=>'Groups', 'action' => 'add', '?' => ['programme'=>$programme->name, 'programme_id'=>$programme->id]], ['class'=>'badge badge-primary']) ?>
