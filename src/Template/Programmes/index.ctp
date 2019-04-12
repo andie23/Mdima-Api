@@ -31,6 +31,7 @@
                 <td><?= h($programme->is_notified) ? "Yes" : "No" ?></td>
                 <td><?= h($programme->created) ?></td>
                 <td class="actions">
+                    <?= $this->Html->link(__('Add groups'),['controller'=>'Groups', 'action' => 'add', '?' => ['programme'=>$programme->name, 'programme_id'=>$programme->id]], ['class'=>'badge badge-primary']) ?>
                     <?= $this->Html->link(__('Details'), ['action' => 'view', $programme->id], ['class'=>'badge badge-primary']) ?>
                     <?= $this->Html->link(__('Modify'), ['action' => 'edit', $programme->id], ['class'=>'badge badge-primary']) ?>
                     <?= $this->Form->postLink(__('Remove'), ['action' => 'delete', $programme->id], ['class'=>'badge badge-danger', 'confirm' => __('Are you sure you want to delete # {0}?', $programme->id)]) ?>
