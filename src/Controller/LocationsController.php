@@ -52,8 +52,17 @@ class LocationsController extends AppController
         if ($this->request->is('post')) {
             $location = $this->Locations->patchEntity($location, $this->request->data);
             if ($this->Locations->save($location)) {
-                $this->Flash->success(__('The location has been saved.'));
-                
+                $this->Flash->success(__('{0} location has been saved.', $location->name));
+                if(array_key_exists('continue', $this->request->data))
+                {
+                    return $this->redirect(['controller'=>'Areas', 'action' => 'add', '?'=>['location_id'=>$location->id]]);
+                }
+                if(array_key_exists('reuse', $this->request->data)){
+                    return $this->redirect(['action'=>'add', '?'=>['region_id'=>$location->region_id]]);
+                }
+                if(array_key_exists('new', $this->request->data)){
+                    return $this->redirect(['action'=>'add']);
+                }
                 if($regionId=$this->request->query('region_id')){
                     return $this->redirect(['action' => 'add', '?'=>['region_id'=>$regionId]]);
                 }

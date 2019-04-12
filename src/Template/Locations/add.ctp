@@ -1,9 +1,11 @@
 <?php 
+ $isRegionSet = false;
  $title = 'Add Location';
  $regionInputView = $this->Form->input('region_id', ['placeholder' => 'region_id', 'class'=> 'custom-select custom-select-lg mb-3"', 'options' => $regions]);
  
  if($regionId=$this->request->query('region_id'))
  {
+    $isRegionSet = true;
     $title = "Add Locations for ". $this->cell("Region::name", ['id'=>$regionId]);
     $regionInputView = $this->Form->input('region_id', ['type'=>'hidden', 'value'=>$regionId]);
  }
@@ -35,6 +37,23 @@
             echo $regionInputView;
             echo "</div>";
         ?>
+        
+        <?php if(!$isRegionSet): ?>
+            <div class="custom-control custom-checkbox" style="margin-bottom:10px;">
+                <input type="checkbox" class="custom-control-input" name="reuse" id="reuse">
+                <label class="custom-control-label" for="reuse">Reuse Region after submission</label>
+            </div>
+        <?php else: ?>
+            <div class="custom-control custom-checkbox" style="margin-bottom:10px;">
+                <input type="checkbox" class="custom-control-input" name="new" id="new">
+                <label class="custom-control-label" for="new">Use another region after submission</label>
+            </div>    
+        <?php endif;?>
+        
+        <div class="custom-control custom-checkbox" style="margin-bottom:10px;">
+            <input type="checkbox" class="custom-control-input" name="continue" id="addAreas">
+            <label class="custom-control-label" for="addAreas">Add areas after submission</label>
+        </div>
     <p/>
     <?= $this->Form->button(__('Submit'),['class' => 'btn btn-primary']) ?>
     <?= $this->Form->end() ?> 
