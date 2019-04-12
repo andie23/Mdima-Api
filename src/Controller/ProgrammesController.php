@@ -1,6 +1,6 @@
 <?php
 namespace App\Controller;
-
+use Cake\Log\Log;
 use App\Controller\AppController;
 
 /**
@@ -47,10 +47,18 @@ class ProgrammesController extends AppController
     {
         $programme = $this->Programmes->newEntity();
         if ($this->request->is('post')) {
+            $con = $this->Programmes->connection();
+            $con->begin();
+            if($this->request->data['is_published']==1)
+            {
+                Log::write('debug', __('Programme {0} is set to publish', $programme->name));
+                $unpublishActive = $this->Programmes->unpublishActive();
+            }
             $programme = $this->Programmes->patchEntity($programme, $this->request->data);
             if ($this->Programmes->save($programme)) {
-                $this->Flash->success(__('The programme has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                $con->commit();
+                $this->Flash->success(__('The programme has been saved. Please add groups to this programme'));
+                return $this->redirect(['controller'=>'Groups', 'action' => 'add', '?' => ['programme'=>$programme->name, 'programme_id'=>$programme->id]]);
             } else {
                 $this->Flash->error(__('The programme could not be saved. Please, try again.'));
             }

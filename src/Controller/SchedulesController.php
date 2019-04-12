@@ -54,6 +54,9 @@ class SchedulesController extends AppController
             $schedule->duration = $this->Schedules->getDurationInHours($schedule->starting_date, $schedule->ending_date);
             if ($this->Schedules->save($schedule)) {
                 $this->Flash->success(__('The schedule has been saved.'));
+                if(array_key_exists('continue', $this->request->data)){
+                    return $this->redirect(['controller'=>'Programmes', 'action'=>'index']);
+                }
                 if($groupId=$this->request->query('group_id')){
                     return $this->redirect(['action' => 'add', '?'=>['group_id'=>$groupId]]);
                 }

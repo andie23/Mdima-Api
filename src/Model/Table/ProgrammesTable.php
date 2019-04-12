@@ -6,7 +6,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-
+use Cake\Log\Log;
 /**
  * Programmes Model
  *
@@ -36,6 +36,43 @@ class ProgrammesTable extends Table
         ]);
     }
 
+    public function getActiveProgramme()
+    {
+        return $this->find()
+                    ->where(['is_published'=>1])
+                    ->first();
+    }
+
+    public function setIsPublished($id, $status)
+    {
+        $entity = $this->get($id);
+        $entity = $this->patchEntity($entity, [
+            'is_published' => $status
+        ]);
+        
+        return $this->save($entity);
+    }
+
+    public function unpublish($id)
+    {
+       return $this->setIsPublished($id, 0);
+    }
+    
+    public function unpublishActive()
+    {
+        if($activeProgramme = $this->getActiveProgramme())
+        {
+            Log::write('debug', __('Unpublishing active programme {0}', $activeProgramme->name));
+            return $this->unpublish($activeProgramme->id);
+        }
+        return false;
+    }
+
+    public function publish($id)
+    {
+        return $this->setIsPublished($id, 1);
+    }
+
     /**
      * Default validation rules.
      *
@@ -56,11 +93,6 @@ class ProgrammesTable extends Table
             ->add('is_published', 'valid', ['rule' => 'boolean'])
             ->requirePresence('is_published', 'create')
             ->notEmpty('is_published');
-
-        $validator
-            ->add('is_notified', 'valid', ['rule' => 'boolean'])
-            ->requirePresence('is_notified', 'create')
-            ->notEmpty('is_notified');
 
         return $validator;
     }

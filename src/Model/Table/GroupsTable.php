@@ -57,14 +57,21 @@ class GroupsTable extends Table
 
         $validator
             ->requirePresence('name', 'create')
-            ->notEmpty('name')
-            ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmpty('name');
 
         $validator
             ->requirePresence('programme_id', 'create')
             ->notEmpty('programme_id');
             
         return $validator;
+    }
+    
+    public function isGroupNameExists($programmeId, $groupName)
+    {
+        return $this->find()
+                    ->where(['programme_id'=>$programmeId,'name'=> $groupName])
+                    ->count() >= 1;
+
     }
 
     public function getAllGroups()

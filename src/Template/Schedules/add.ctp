@@ -38,6 +38,10 @@ if($groupId=$this->request->query('group_id'))
             echo $groupInputView;
             echo "</div>";
         ?>
+        <div class="custom-control custom-checkbox" style="margin-bottom:10px;">
+            <input type="checkbox" class="custom-control-input" name="continue" id="allocateAreas">
+            <label class="custom-control-label" for="allocateAreas">FInish and go to Programmes</label>
+        </div>
     <p/>
     <?= $this->Form->button(__('Submit'),['class' => 'btn btn-primary']) ?>
     <?= $this->Form->end() ?> 
