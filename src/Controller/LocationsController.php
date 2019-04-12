@@ -66,7 +66,7 @@ class LocationsController extends AppController
                 if($regionId=$this->request->query('region_id')){
                     return $this->redirect(['action' => 'add', '?'=>['region_id'=>$regionId]]);
                 }
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             } else {
                 $this->Flash->error(__('The location could not be saved. Please, try again.'));
             }

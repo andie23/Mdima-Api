@@ -1,9 +1,11 @@
 <?php 
+    $isLocationSet = false;
     $title= "Add Area";
     $locationInputView = $this->Form->input('location_id', ['placeholder' => 'location_id', 'class'=> 'custom-select custom-select-lg mb-3"', 'options' => $locations]);
 
     if($locationId=$this->request->query('location_id'))
     {
+        $isLocationSet = true;
         $title = "Add Area for ". $this->cell('Location::name',['id'=>$locationId]);
         $locationInputView = $this->Form->input('location_id', ['type'=>'hidden', 'value'=>$locationId]);
     }
@@ -36,6 +38,18 @@
             echo "</div>";
         ?>
     <p/>
+    <?php if(!$isLocationSet): ?>
+            <div class="custom-control custom-checkbox" style="margin-bottom:10px;">
+                <input type="checkbox" class="custom-control-input" name="reuse" id="reuse">
+                <label class="custom-control-label" for="reuse">Reuse Location after submission</label>
+            </div>
+        <?php else: ?>
+            <div class="custom-control custom-checkbox" style="margin-bottom:10px;">
+                <input type="checkbox" class="custom-control-input" name="new" id="new">
+                <label class="custom-control-label" for="new">Use another location after submission</label>
+            </div>    
+        <?php endif;?>
+
     <?= $this->Form->button(__('Submit'),['class' => 'btn btn-primary']) ?>
     <?= $this->Form->end() ?> 
     </div>

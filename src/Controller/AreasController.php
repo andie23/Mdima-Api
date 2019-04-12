@@ -63,6 +63,12 @@ class AreasController extends AppController
                     'location' => $location->name
                 ]);
                 $this->Flash->success(__('The area has been saved.'));
+                if(array_key_exists('reuse', $this->request->data)){
+                    return $this->redirect(['action'=>'add', '?'=>['location_id'=>$area->location_id]]);
+                }
+                if(array_key_exists('new', $this->request->data)){
+                    return $this->redirect(['action'=>'add']);
+                }
                 if($locationId=$this->request->query('location_id')){
                     return $this->redirect(['action'=>'add', '?'=>['location_id'=>$locationId]]);
                 }
