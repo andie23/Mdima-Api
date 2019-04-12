@@ -25,7 +25,7 @@ class UsersController extends AppController
             }
         }
     }
-    
+
     public function logout()
     {
         $this->Flash->success('You are now logged out.');
@@ -115,6 +115,12 @@ class UsersController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
+
+        if($id == $this->Auth->User()['id'])
+        {
+            $this->Flash->error('You are not allowed to self delete your account');
+            return $this->redirect(['action' => 'index']);
+        }
         if ($this->Users->delete($user)) {
             $this->Flash->success(__('The user has been deleted.'));
         } else {
