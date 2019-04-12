@@ -14,12 +14,12 @@
                             Our Android app makes you easily track load-shedding schedules released by Escom
                             Using an intuitive and user friendly UI.
                             <p/>
-                            <a href='#' class="btn btn-primary">Download APK </a>
+                            <a href='#' class="btn btn-success">Download APK </a>
                         </div>
                     </div>
                     <div class="card-header"><i class="fa fa-user-circle icon fa-4x"></i> Login</div>
                     <div class="card-body">
-                    <div class="p-3 mb-2 bg-danger text-white"><b>ATTENTION:</b> this portal is for administration only. For use, download the mdima app</div>
+                    <div class="p-3 mb-2 bg-danger text-white"><b>ATTENTION:</b> This portal is for administration only. For use, download the mdima app</div>
                     <?= $this->Form->create('', ['controller' => 'Users', 'action' => 'login']) ?>
                     <?php
                         echo "<div class='form-group'>";
