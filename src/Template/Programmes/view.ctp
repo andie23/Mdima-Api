@@ -1,11 +1,7 @@
 <div class="row">
 <div class="col-md-2">
 <div class="list-group">
-    <?php if($programme->is_published): ?>
-        <?= $this->Html->link(__('Unpublish (Not Synched)'), ['action' => 'unpublish', $programme->id], ['class' => 'list-group-item list-group-item-action']) ?>
-    <?php else: ?>
-        <?= $this->Html->link(__('Publish (Synched)'), ['action' => 'publish', $programme->id], ['class' => 'list-group-item list-group-item-action']) ?>
-    <?php endif; ?>
+    <?= $this->element('Groups/publish') ?>
     <?= $this->Html->link(__('Add Group'), ['controller' => 'Groups', 'action' => 'add', '?'=>['programme_id'=>$programme->id, 'programme' => $programme->name]], ['class' => 'list-group-item list-group-item-action']) ?>
     <?= $this->Html->link(__('Edit Programme'), ['action' => 'edit', $programme->id], ['class' => 'list-group-item list-group-item-action']) ?>
     <?= $this->Form->postLink(__('Delete Programme'), ['action' => 'delete', $programme->id], ['class' => 'list-group-item list-group-item-action', 'confirm' => __('Are you sure you want to delete # {0}?', $programme->id)]) ?>
