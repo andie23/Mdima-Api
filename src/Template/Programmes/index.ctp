@@ -17,7 +17,6 @@
                 <th><?= $this->Paginator->sort('id') ?></th>
                 <th><?= $this->Paginator->sort('name') ?></th>
                 <th><?= $this->Paginator->sort('is_published', ['label'=>'Synchronizable']) ?></th>
-                <th><?= $this->Paginator->sort('is_notified') ?></th>
                 <th><?= $this->Paginator->sort('created') ?></th>
                 <th class="actions"><?= __('Options') ?></th>
             </tr>

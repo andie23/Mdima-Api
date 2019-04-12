@@ -28,12 +28,8 @@
             <td><?= h($programme->name) ?></td>
         </tr>
         <tr>
-            <th><?= __('Is Published') ?></th>
+            <th><?= __('Synchronizable') ?></th>
             <td><?= $programme->is_published ? __('Yes') : __('No'); ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Is Notified') ?></th>
-            <td><?= $programme->is_notified ? __('Yes') : __('No'); ?></td>
         </tr>
         <tr>
             <th><?= __('Created') ?></th>
