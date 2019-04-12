@@ -114,8 +114,9 @@ class AllocationsTable extends Table
         $groupId = 'groupId';
         $query = $this->find()
                     ->select(['name' => 'Groups.name', 'groupId'  => 'Groups.id'])
-                    ->contain('Groups')
-                    ->where(['area_id' => $areaId])
+                    ->where(['area_id' => $areaId, 'programmes.is_published'=>1])
+                    ->innerJoin('groups', 'Allocations.group_id=groups.id')
+                    ->innerJoin('programmes', 'programmes.id=groups.programme_id')
                     ->max('group_id');
         return $query!=null ? [$name => $query->name, $groupId=>$query->groupId] : 
             [$name => '', $groupId=>''];
