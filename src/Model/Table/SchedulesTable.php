@@ -87,11 +87,13 @@ class SchedulesTable extends Table
     {
         $count = $this->find()
                     ->select(['blackouts' => "COUNT(DISTINCT Schedules.id)"])
-                    ->where([__('{0}.id', $table) => $id])
+                    ->where([__('{0}.id', $table) => $id, 'programmes.is_published'=>1])
                     ->innerJoin('allocations', 'Schedules.group_id=Allocations.group_id')
                     ->innerJoin('areas', 'areas.id=Allocations.area_id')
                     ->innerJoin('locations', 'areas.location_id=locations.id')
                     ->innerJoin('regions', 'regions.id=locations.region_id')
+                    ->innerJoin('groups', 'Schedules.group_id=groups.id')
+                    ->innerJoin('programmes', 'programmes.id=groups.programme_id')
                     ->first()
                     ->blackouts;
         return $count!=null ? (int) $count : 0;
@@ -107,7 +109,9 @@ class SchedulesTable extends Table
                                   'ending_date' => 'max(ending_date)'
                               ])
                               ->innerJoin('allocations', 'allocations.group_id = schedules.group_id')
-                              ->where(['allocations.area_id' => $areaId])
+                              ->innerJoin('groups', 'Schedules.group_id=groups.id')
+                              ->innerJoin('programmes', 'programmes.id=groups.programme_id')
+                              ->where(['allocations.area_id' => $areaId, 'programmes.is_published' => 1])
                               ->first();
         if ($blackoutDates->starting_date!= null and $blackoutDates->ending_date!=null)
         {
@@ -123,11 +127,13 @@ class SchedulesTable extends Table
     {
         $average = $this->find()
                     ->select(['average' => 'avg(schedules.duration)'])
-                    ->where([__('{0}.id', $table) => $id])
+                    ->where([__('{0}.id', $table) => $id, 'programmes.is_published' => 1])
                     ->innerJoin('allocations', 'allocations.group_id = Schedules.group_id')
                     ->innerJoin('areas', 'areas.id=allocations.area_id')
                     ->innerJoin('locations', 'locations.id=areas.location_id')
                     ->innerJoin('regions', 'regions.id=locations.region_id')
+                    ->innerJoin('groups', 'Schedules.group_id=groups.id')
+                    ->innerJoin('programmes', 'programmes.id=groups.programme_id')
                     ->first()
                     ->average;
         return $average!= null ? (int) $average : 0;
