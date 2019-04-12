@@ -57,8 +57,28 @@ class AppController extends Controller
         parent::initialize();
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
+ 
+        $this->loadComponent('Auth', [
+            'loginAction'=>[
+                 'controller' => 'Users',
+                 'action' => 'login'
+             ],
+            'loginRedirect' => [
+                'controller' => 'Dashboard',
+                'action' => 'index'
+            ]
+        ]); 
     }
 
+    public function beforeFilter(Event $event)
+    {
+
+       if($this->Auth){
+           $this->set('user', $this->Auth->User());
+        }else{
+            $this->set('user', []);
+       }
+    }
     /**
      * Before render callback.
      *

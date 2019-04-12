@@ -42,10 +42,13 @@ $cakeDescription = 'Mdima-Web';
     <?= $this->fetch('script') ?>
 </head>
 
-<body>
-    <?= $this->element('Navbar/default') ?>
-    <p/>
+<body> 
+
+    <?php if($user):?>
+        <?= $this->element('Navbar/default') ?>
+    <?php endif; ?>
     
+    <p/>
     <?= $this->Flash->render() ?>
     <div class="container">
         <?= $this->fetch('content') ?>
