@@ -16,7 +16,7 @@
     <h5 class="card-title">Details</h5>
     <p class="card-text">
     <table class="table">
-                                        <tr>
+                <tr>
                     <th><?= __('Fullname') ?></th>
                     <td><?= h($user->fullname) ?></td>
                 </tr>
@@ -34,15 +34,16 @@
                 </tr>
                             </table>
     </p>
-  </div>
-</div>
-    
     <div class="card" style="width: 58rem;">
     <div class="card-body">
         <h5 class="card-title"><?= __('Password') ?></h5>
         <p class="card-text"><?= $this->Text->autoParagraph(h($user->password)); ?></p>
     </div>
     </div>
+  </div>
+</div>
+    
+
 </div>
 </div>
 </div>

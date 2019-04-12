@@ -27,9 +27,9 @@
                 <td><?= h($user->username) ?></td>
                 <td><?= h($user->last_login) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('Details'), ['action' => 'view', $user->id]) ?>
-                    <?= $this->Html->link(__('Modify'), ['action' => 'edit', $user->id]) ?>
-                    <?= $this->Form->postLink(__('Remove'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
+                    <?= $this->Html->link(__('Details'), ['action' => 'view', $user->id], ['class'=>'badge badge-primary']) ?>
+                    <?= $this->Html->link(__('Modify'), ['action' => 'edit', $user->id], ['class'=>'badge badge-primary']) ?>
+                    <?= $this->Form->postLink(__('Remove'), ['action' => 'delete', $user->id], ['class'=>'badge badge-danger', 'confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
