@@ -122,7 +122,7 @@ class AreasTable extends Table
                'area' => $area->area,
                'location' => $area->location,
                'region' => $area->region,
-               'group' => $areaGroup['name'],
+               'group' => $areaGroup['groupId'],
                'startsOn' => $blackoutDates['startingDate'] ,
                'endsOn' => $blackoutDates['endingDate'],
                'numberOfBlackouts' => $schedules->getAreaBlackoutCount($area->id),
