@@ -20,6 +20,9 @@
             echo "<div class='form-group'>";
             echo $this->Form->input('is_published', ['label'=>'Is primary schedule', 'class'=> 'form-control', 'placeholder' => 'is_published',]);
             echo "</div>";
+			echo "<div class='form-group'>";
+            echo $this->Form->hidden('is_notified', ['type'=>'text',	'label'=>'Is primary schedule', 'class'=> 'form-control', 'placeholder' => 'is_published',]);
+            echo "</div>";
         ?>
     <p/>
     <?= $this->Form->button(__('Next'),['class' => 'btn btn-success']) ?>

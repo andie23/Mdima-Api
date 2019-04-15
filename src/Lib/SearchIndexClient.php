@@ -66,7 +66,12 @@ class SearchIndexClient {
     
     public function clear()
     {
-       $this->request(self::POST, __('{0}/clear',$this->baseUrl));
+       $response = $this->request(self::POST, __('{0}/clear',$this->baseUrl));
+	   $responseBody = json_decode($response->body);
+	   if(array_key_exists('taskID', $responseBody)){
+			return true;
+	   }
+	   return false;
     }
 
     public function delete($objectID)
@@ -93,6 +98,11 @@ class SearchIndexClient {
 
     public function indexBatch($batch)
     {
-       return $this->request(self::POST, __('{0}/batch', $this->baseUrl), $batch);
+       $response = $this->request(self::POST, __('{0}/batch', $this->baseUrl), $batch);
+	   $responseBody = json_decode($response->body);
+	   if(array_key_exists('taskID', $responseBody)){
+			return true;
+	   }
+	   return false;
     }
 }

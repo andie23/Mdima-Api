@@ -29,7 +29,7 @@ class DefaultUser extends AbstractMigration
     {
         $this->query(
             "INSERT INTO `users` (`fullname`, `username`, `password`, `last_login`) VALUES
-            ('admin', 'admin', '$2y$10$iHm4CQMPDvhHnrvxPeuYCOVyfaz3IUIoQN5M2JocGiLhmlz8dg6Fi', '2019-04-14 05:24:22');
+            ('admin', 'admin', '$2y\$10\$iHm4CQMPDvhHnrvxPeuYCOVyfaz3IUIoQN5M2JocGiLhmlz8dg6Fi', '2019-04-14 05:24:22');
             ");
     }
 }
